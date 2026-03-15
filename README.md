@@ -1,3 +1,5 @@
+# DoggyTracker
+A website that allow people to track their lost animals with a simple QR Code tag
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.

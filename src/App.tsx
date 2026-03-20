@@ -1,11 +1,16 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+
 import { useAuth } from './hooks/useAuth'
 import { AuthPage } from './pages/AuthPage'
-// import { Dashboard } from './pages/Dashboard'
 import { AnimalPage } from './pages/AnimalPage'
+import { HomePage } from './pages/HomePage'
+import { Dashboard } from './pages/Dashboard'
+import { GenerateQR } from './pages/GenerateQR'
 
 function App() {
-  const { user, loading } = useAuth()
+  const navigate = useNavigate()
+  const { user, loading, signOut } = useAuth()
 
   if (loading) {
     return (
@@ -20,20 +25,22 @@ function App() {
       {user && (
         <nav className="flex justify-between p-4 bg-white shadow-sm sticky top-0 z-50">
           <span>👋 {user.user_metadata?.prenom || 'Utilisateur'}</span>
-          <a href="/" className="text-red-500 underline hover:text-red-700">
-            Dashboard
-          </a>
+          <div className="flex gap-4">
+            <button onClick={() => navigate('/dashboard')}>Dashboard</button>
+            <button onClick={signOut}>Déconnexion</button>
+          </div>
         </nav>
       )}
       
       <Routes>
-        {/* <Route 
-          path="/" 
-          element={user ? <Dashboard /> : <Navigate to="/login" />}
-        /> */}
+        <Route path="/" element={<HomePage />} />
         <Route path="/:animalId" element={<AnimalPage />} />
         <Route path="/login" element={<AuthPage />} />
-        <Route path="*" element={<Navigate to={user ? "/" : "/login"} />} />
+        <Route path="/dashboard" element={
+            user ? <Dashboard /> : <Navigate to="/login" />
+          } />
+        <Route path='generate-qr-code' element={<GenerateQR />} />
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </div>
   )

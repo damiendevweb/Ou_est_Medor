@@ -1,17 +1,18 @@
-import { useEffect, useState } from 'react'
-import { useAuth } from '../hooks/useAuth'
+import { supabase } from '../lib/supabase';
 import { useSearchParams } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth'
+import { useEffect, useState } from 'react'
 
 export const AuthPage = () => {
-    const {user, signUp, signIn } = useAuth()
+    const { user, signUp, signIn } = useAuth()
     const [isSignUp, setIsSignUp] = useState(false)
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [prenom, setPrenom] = useState('')
     const [animalId, setAnimalId] = useState('')
     const [error, setError] = useState<string | null>(null)
+    const [info, setInfo] = useState<string | null>(null);
     const [searchParams] = useSearchParams();
-
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -28,6 +29,27 @@ export const AuthPage = () => {
         }
     }
 
+    const handleForgotPassword = async () => {
+        setError(null);
+        setInfo(null);
+
+        if (!email) {
+            setError("Entre ton email pour recevoir le lien de réinitialisation");
+            return;
+        }
+
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+            redirectTo: 'https://doggytracker.onrender.com/reset-password',
+        });
+
+        if (error) {
+            setError(error.message);
+        } else {
+            setInfo("Email de réinitialisation envoyé. Vérifie ta boîte mail.");
+        }
+    };
+
+
     useEffect(() => {
         const animalParam = searchParams.get('animal');
         const modeParam = searchParams.get('mode');
@@ -38,12 +60,12 @@ export const AuthPage = () => {
             setIsSignUp(true);
         }
     }, [searchParams]);
-  useEffect(() => {
-    if (user) {
-      console.log('👤 Déjà connecté, redirect dashboard');
-        window.location.href = '/dashboard';
-    }
-  }, [user]);
+    useEffect(() => {
+        if (user) {
+            console.log('👤 Déjà connecté, redirect dashboard');
+            window.location.href = '/dashboard';
+        }
+    }, [user]);
 
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 max-w-sm mx-auto p-6 border rounded-lg shadow-md">
@@ -91,7 +113,15 @@ export const AuthPage = () => {
                 minLength={6}
                 required
             />
+            <button
+            type="button"
+            onClick={handleForgotPassword}
+            className="text-sm text-blue-600 underline hover:text-blue-800 text-left"
+            >
+            Mot de passe oublié ?
+            </button>
 
+            {info && <p className="text-green-600 text-sm p-2 bg-green-50 rounded">{info}</p>}
             {error && <p className="text-red-500 text-sm p-2 bg-red-50 rounded">{error}</p>}
 
             <button

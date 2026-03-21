@@ -7,6 +7,7 @@ import { AnimalPage } from './pages/AnimalPage'
 import { HomePage } from './pages/HomePage'
 import { Dashboard } from './pages/Dashboard'
 import { GenerateQR } from './pages/GenerateQR'
+import { ResetPasswordPage } from './pages/ResetPagePassword'
 
 function App() {
   const navigate = useNavigate()
@@ -36,6 +37,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/:animalId" element={<AnimalPage />} />
         <Route path="/login" element={<AuthPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/dashboard" element={
             user ? <Dashboard /> : <Navigate to="/login" />
           } />

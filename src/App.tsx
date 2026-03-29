@@ -34,10 +34,6 @@ function App() {
       )}
       
       <Routes>
-        <Route path="/manifest.webmanifest" element={<Navigate to="/" replace />} />
-        <Route path="/favicon.ico" element={<Navigate to="/" replace />} />
-        <Route path="/icons/*" element={<Navigate to="/" replace />} />
-
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<AuthPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />

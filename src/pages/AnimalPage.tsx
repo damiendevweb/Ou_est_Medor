@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, Navigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useGeolocation } from '../hooks/useGeolocation'
 
@@ -19,14 +19,18 @@ type Animal = {
     telephone_veterinaire: string
 }
 
+
 export const AnimalPage = () => {
+    
     const { animalId } = useParams<{ animalId: string }>()
     const [animal, setAnimal] = useState<Animal | null>(null)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
     const { latitude: lat, longitude: lng, getLocation } = useGeolocation()
     const isFicheEmpty = animal && (!animal.nom || animal.nom.trim() === '');
-
+    if (!animalId?.match(/^[0-9a-f-]{36}$/i)) {
+    return <Navigate to="/" replace />
+    }
     useEffect(() => {
         getLocation()
     }, [])

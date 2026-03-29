@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
+import { useAge } from '../hooks/useAge'
 
 type Animal = {
     id: string
@@ -15,6 +16,7 @@ type Animal = {
     mail_2: string | null
     prenom_proprietaire: string
     telephone_veterinaire: string
+    birth_date?: string
 }
 
 export const Dashboard = () => {
@@ -23,6 +25,7 @@ export const Dashboard = () => {
     const [error, setError] = useState<string | null>(null)
     const [editing, setEditing] = useState(false);
     const [formData, setFormData] = useState<Partial<Animal>>({});
+    const { display: ageDisplay } = useAge(formData.birth_date);
 
     const fetchAnimal = async () => {
         const { data: { user } } = await supabase.auth.getUser()
@@ -166,13 +169,14 @@ export const Dashboard = () => {
                             <h3 className="font-semibold mb-3">📊 Infos physiques</h3>
                             {editing ? (
                                 <>
-                                    <input
-                                        type="number"
-                                        value={formData.age ?? ''}
-                                        onChange={(e) => setFormData({ ...formData, age: Number(e.target.value) })}
-                                        className="w-full p-3 border rounded-lg mb-2 focus:ring-2 focus:ring-blue-500"
-                                        placeholder="Âge (ans)"
-                                    />
+<input
+  type="date"
+  value={formData.birth_date ?? ''}
+  onChange={(e) => setFormData({ ...formData, birth_date: e.target.value })}
+  className="w-full p-3 border rounded-lg mb-2 focus:ring-2 focus:ring-blue-500"
+  placeholder="Date de naissance"
+/>
+
                                     <input
                                         type="number"
                                         step="0.1"
@@ -184,7 +188,7 @@ export const Dashboard = () => {
                                 </>
                             ) : (
                                 <>
-                                    <p><span className="font-medium">Âge :</span> {animal.age} ans</p>
+                                    <p><span className="font-medium">Âge :</span> {ageDisplay}</p>
                                     <p><span className="font-medium">Poids :</span> {animal.poids} kg</p>
                                 </>
                             )}

@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
 import { useAge } from '../hooks/useAge'
+import EnablePushButton from '../components/EnablePushButton'
+import TestPushButton from '../components/TestPushButton'
 
 type Animal = {
     id: string
@@ -169,13 +171,13 @@ export const Dashboard = () => {
                             <h3 className="font-semibold mb-3">📊 Infos physiques</h3>
                             {editing ? (
                                 <>
-<input
-  type="date"
-  value={formData.birth_date ?? ''}
-  onChange={(e) => setFormData({ ...formData, birth_date: e.target.value })}
-  className="w-full p-3 border rounded-lg mb-2 focus:ring-2 focus:ring-blue-500"
-  placeholder="Date de naissance"
-/>
+                                    <input
+                                        type="date"
+                                        value={formData.birth_date ?? ''}
+                                        onChange={(e) => setFormData({ ...formData, birth_date: e.target.value })}
+                                        className="w-full p-3 border rounded-lg mb-2 focus:ring-2 focus:ring-blue-500"
+                                        placeholder="Date de naissance"
+                                    />
 
                                     <input
                                         type="number"
@@ -277,6 +279,10 @@ export const Dashboard = () => {
                         </div>
                     </div>
                 </form>
+                    <div className="space-y-4">
+                        <EnablePushButton />
+                        <TestPushButton />
+                    </div>
             </div>
         </div>
     )

@@ -2,7 +2,7 @@ import { supabase } from '../lib/supabase'
 
 export default function TestPushButton() {
   const sendTestPush = async () => {
-    const { error } = await supabase.functions.invoke('send-test-push', {
+    const { error } = await supabase.functions.invoke('push-notification', {
       body: {}
     })
 

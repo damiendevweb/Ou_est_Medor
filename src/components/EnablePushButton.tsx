@@ -60,6 +60,9 @@ export default function EnablePushButton() {
     }
 
     alert('Notifications activées')
+    navigator.serviceWorker.addEventListener('message', (event) => {
+        console.log('Received a message from service worker:', event.data);
+    });
   }
 
   return (

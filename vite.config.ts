@@ -14,6 +14,7 @@ export default defineConfig({
       includeAssets: ['favicon.ico', 'icons/*.png', 'robots.txt'],
       manifest: false,
       workbox: {
+        importScripts: ['/service-worker/push.js'],
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
         runtimeCaching: [
           {

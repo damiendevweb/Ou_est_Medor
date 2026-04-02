@@ -5,6 +5,8 @@ self.addEventListener("install", () => {
 
 self.addEventListener('push', onPush)
 function onPush(event) {
+    console.log('[Push] payload reçu', event.data?.text())
+
   if (!event.data) return
 
   const data = event.data.json()

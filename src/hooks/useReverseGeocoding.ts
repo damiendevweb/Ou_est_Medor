@@ -3,6 +3,18 @@ import { reverseGeocode } from '../lib/reverse-geocoding'
 
 type Address = {
   displayName: string
+  shortAddress: string
+  address: {
+    houseNumber: string | null
+    road: string | null
+    suburb: string | null
+    city: string | null
+    postcode: string | null
+    county: string | null
+    state: string | null
+    country: string | null
+    countryCode: string | null
+  }
 } | null
 
 export const useReverseGeocoding = (lat: number | null, lng: number | null) => {
@@ -30,6 +42,8 @@ export const useReverseGeocoding = (lat: number | null, lng: number | null) => {
         if (!cancelled) {
           setAddress({
             displayName: data.displayName,
+            shortAddress: data.shortAddress,
+            address: data.address,
           })
         }
       } catch (e) {

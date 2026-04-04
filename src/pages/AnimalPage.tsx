@@ -24,6 +24,9 @@ type AccessMeta = {
   from: string
   path: string
   userAgent: string
+  latitude?: number
+  longitude?: number
+  address?: string
 }
 
 export const AnimalPage = () => {
@@ -36,7 +39,6 @@ export const AnimalPage = () => {
     latitude: lat,
     longitude: lng,
     getLocation,
-    loading: geoLoading,
     error: geoError,
   } = useGeolocation()
 
@@ -49,7 +51,7 @@ export const AnimalPage = () => {
   const normalizedAnimalId = animalId?.toUpperCase() ?? ''
   const isFicheEmpty = animal && (!animal.nom || animal.nom.trim() === '')
 
-  const logAnimalAccess = async (id: string) => {
+  const logAnimalAccess = async (id: string, meta: AccessMeta) => {
     try {
       if (typeof window === 'undefined') return
 
@@ -59,12 +61,6 @@ export const AnimalPage = () => {
 
       if (last && now - Number(last) < 2 * 60 * 1000) {
         return
-      }
-
-      const meta: AccessMeta = {
-        from: 'url',
-        path: window.location.pathname,
-        userAgent: navigator.userAgent,
       }
 
       const { error } = await supabase.from('animal_access_events').insert({
@@ -128,8 +124,52 @@ export const AnimalPage = () => {
 
   useEffect(() => {
     if (!animal?.id) return
-    void logAnimalAccess(animal.id)
-  }, [animal?.id])
+    if (typeof window === 'undefined') return
+
+    const key = `animal-access:${animal.id}`
+    const last = sessionStorage.getItem(key)
+    const now = Date.now()
+
+    if (last && now - Number(last) < 2 * 60 * 1000) {
+      return
+    }
+
+    let cancelled = false
+
+    const sendWithBestAvailableData = async () => {
+      if (cancelled) return
+
+      const meta: AccessMeta = {
+        from: 'url',
+        path: window.location.pathname,
+        userAgent: navigator.userAgent,
+        latitude: lat ?? undefined,
+        longitude: lng ?? undefined,
+        address: address?.shortAddress ?? undefined,
+      }
+
+      await logAnimalAccess(animal.id, meta)
+    }
+
+    if (address?.shortAddress) {
+      void sendWithBestAvailableData()
+      return
+    }
+
+    if (geoError) {
+      void sendWithBestAvailableData()
+      return
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      void sendWithBestAvailableData()
+    }, 4000)
+
+    return () => {
+      cancelled = true
+      window.clearTimeout(timeoutId)
+    }
+  }, [animal?.id, lat, lng, address?.shortAddress, geoError])
 
   if (loading) {
     return (
@@ -210,31 +250,14 @@ export const AnimalPage = () => {
     <div className="max-w-2xl mx-auto p-8">
       <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-8 shadow-xl border mb-8">
         <div className="flex flex-col gap-2 mb-6">
-          {geoLoading ? (
-            <p className="text-blue-500 p-3 bg-blue-50 rounded-lg font-mono">
-              🔍 Localisation...
-            </p>
-          ) : geoError ? (
-            <p className="text-red-500 p-3 bg-red-50 rounded-lg font-mono">
-              ⚠️ {geoError}
-            </p>
-          ) : lat != null && lng != null ? (
-            <p className="text-green-600 p-4 bg-green-50 rounded-lg font-mono">
-              📍 {lat.toFixed(6)}, {lng.toFixed(6)}
-            </p>
-          ) : (
-            <p className="text-gray-500 p-3 bg-gray-50 rounded-lg font-mono">
-              📍 Non disponible
-            </p>
-          )}
 
           {addressLoading ? (
             <p className="text-blue-500 p-3 bg-blue-50 rounded-lg text-sm">
               🔍 Résolution de l'adresse...
             </p>
-          ) : address?.displayName ? (
+          ) : address?.shortAddress ? (
             <p className="text-gray-700 p-4 bg-white rounded-lg border text-sm">
-              📬 {address.displayName}
+              📬 {address.shortAddress}
             </p>
           ) : null}
 

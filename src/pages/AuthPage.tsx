@@ -62,7 +62,6 @@ export const AuthPage = () => {
     }, [searchParams]);
     useEffect(() => {
         if (user) {
-            console.log('👤 Déjà connecté, redirect dashboard');
             window.location.href = '/dashboard';
         }
     }, [user]);

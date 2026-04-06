@@ -5,7 +5,7 @@ export const GenerateQR = () => {
 
   return (
     <section className="p-6 bg-white rounded-2xl shadow-2xl ">
-      <h3 className="text-xl font-bold mb-4 text-center">🐕 Générateur Doggy QR</h3>
+      <h3 className="text-xl font-bold mb-4 text-center">Générateur de QR</h3>
       <button
         onClick={generateNewQR}
         disabled={loading}

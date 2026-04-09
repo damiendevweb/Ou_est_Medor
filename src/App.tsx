@@ -9,6 +9,7 @@ import { GenerateQR } from './pages/GenerateQR'
 import { ResetPasswordPage } from './pages/ResetPagePassword'
 import { NavigationBar } from './components/NavigationBar'
 import { ProfilePage } from './pages/Profile'
+import { Footer } from './components/Footer'
 
 function App() {
   const { user, loading } = useAuth()
@@ -42,6 +43,8 @@ function App() {
 
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
+
+      <Footer />
     </div>
   )
 }

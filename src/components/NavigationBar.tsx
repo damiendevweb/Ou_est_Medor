@@ -1,21 +1,21 @@
 import { Link } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
+import DarkSwitch from './DarkSwitch'
 
 export const NavigationBar = () => {
   const { user } = useAuth()
 
   return (
-    <header className="fixed w-full">
-      <nav className="bg-white border-gray-200 py-2.5 dark:bg-gray-900">
+    <header className="sticky w-full top-0 z-50">
+      <nav className="bg-white py-2.5 dark:bg-gray-900">
         <div className="flex flex-wrap items-center justify-between max-w-7xl px-4 mx-auto">
           <Link to="/">
-            <h1 className="text-xl font-semibold tracking-tight text-slate-900 sm:text-2xl">
+            <h1 className="text-xl font-semibold tracking-tight text-slate-900 sm:text-2xl dark:text-white">
               DoggyTracker
             </h1>
           </Link>
 
           <div className="flex items-center lg:order-2">
-
             {user && (
               <Link
                 to="/profile"
@@ -25,6 +25,7 @@ export const NavigationBar = () => {
                 <span>Mon profil</span>
               </Link>
             )}
+            <DarkSwitch/>
 
             <button data-collapse-toggle="mobile-menu-2" type="button" className="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="mobile-menu-2" aria-expanded="false">
               <span className="sr-only">Open main menu</span>

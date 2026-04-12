@@ -6,11 +6,11 @@ export const HomePage = () => {
   return (
     <>
       <HeroBanner />
-      <div className="bg-linear-to-br from-blue-50 to-indigo-100">
+      <div className="">
         <section className="max-w-4xl mx-auto px-6 py-24 text-center">
           <div className="mb-8">
-            <h2 className="text-5xl md:text-6xl font-bold bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-6">
-              DoggyTracker
+            <h2 className="text-5xl md:text-6xl font-bold mb-6 text-dark-grey">
+              Où est Médor ?
             </h2>
             <p className="text-xl md:text-2xl text-gray-700 mb-8 max-w-2xl mx-auto leading-relaxed">
               Suivi animal en 1 scan.
@@ -62,6 +62,7 @@ export const HomePage = () => {
           </div>
         </section>
         <section className="faq__container max-w-4xl mx-auto px-6 py-24">
+          <h3>Foire aux questions</h3>
           <FaqAccordion />
         </section>
       </div>

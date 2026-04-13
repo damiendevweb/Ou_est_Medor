@@ -99,7 +99,7 @@ const accordionItemStyle = cva("w-full", {
         "overflow-clip rounded-xl border border-base-100 bg-background-100",
       style_two: "border-b border-base-50",
       style_three: "overflow-clip rounded-xl bg-background-100",
-      style_four: "overflow-clip rounded-xl bg-background-soft-50",
+      style_four: "overflow-clip rounded-xl bg-white",
       style_five: "overflow-clip rounded-xl bg-background-soft-50"
     }
   }

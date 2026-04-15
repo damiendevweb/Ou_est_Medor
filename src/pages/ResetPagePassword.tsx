@@ -45,38 +45,50 @@ export const ResetPasswordPage = () => {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="flex flex-col gap-4 max-w-sm mx-auto p-6 border rounded-lg shadow-md mt-10"
-    >
-      <h3 className="text-2xl font-bold text-center mb-4">Nouveau mot de passe</h3>
+    <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 flex-1">
+      <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+        <h2 className="text-center text-2xl/9 font-bold tracking-tight text-black">Nouveau mot de passe</h2>
+      </div>
+      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-6"
+        >
+          <div>
+            <label htmlFor="password" className="block text-sm/6 font-medium text-dark-grey">Nouveau mot de passe</label>
+            <div className="mt-2">
+              <input
+                type="password"
+                placeholder="Nouveau mot de passe"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-dark-grey outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-yellow-150 sm:text-sm/6"
+                required
+              />
+            </div>
+            <div className="mt-2">
+              <input
+                type="password"
+                placeholder="Confirmer le mot de passe"
+                value={password2}
+                onChange={e => setPassword2(e.target.value)}
+                className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-dark-grey outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-yellow-150 sm:text-sm/6"
+                required
+              />
+            </div>
+          </div>
 
-      <input
-        type="password"
-        placeholder="Nouveau mot de passe"
-        value={password}
-        onChange={e => setPassword(e.target.value)}
-        className="border p-3 rounded-lg focus:ring-2 focus:ring-blue-500"
-        required
-      />
-      <input
-        type="password"
-        placeholder="Confirmer le mot de passe"
-        value={password2}
-        onChange={e => setPassword2(e.target.value)}
-        className="border p-3 rounded-lg focus:ring-2 focus:ring-blue-500"
-        required
-      />
+          {error && <p className="text-red-500 text-sm p-2 bg-red-50 rounded">{error}</p>}
+          {info && <p className="text-green-600 text-sm p-2 bg-green-50 rounded">{info}</p>}
 
-      {error && <p className="text-red-500 text-sm p-2 bg-red-50 rounded">{error}</p>}
-      {info && <p className="text-green-600 text-sm p-2 bg-green-50 rounded">{info}</p>}
-
-      <button
-        type="submit"
-        className="bg-blue-600 text-white p-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
-      >
-        Mettre à jour le mot de passe
-      </button>
-    </form>
+          <button
+            type="submit"
+            className="flex w-full justify-center rounded-md bg-yellow-150 px-3 py-1.5 text-sm/6 font-semibold text-dark-grey hover:bg-yellow-150/80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-150 transition-colors"
+          >
+            Mettre à jour le mot de passe
+          </button>
+        </form>
+      </div>
+    </div>
   );
 };

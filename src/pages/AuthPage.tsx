@@ -105,8 +105,6 @@ export const AuthPage = () => {
                             </div>
                         </>
                     )}
-
-
                     <div>
                         <label htmlFor="password" className="block text-sm/6 font-medium text-dark-grey">Adresse Email</label>
                         <div className="mt-2">
@@ -120,9 +118,6 @@ export const AuthPage = () => {
                             />
                         </div>
                     </div>
-
-
-
                     <div>
                         <div className="flex items-center justify-between">
                             <label htmlFor="password" className="block text-sm/6 font-medium text-dark-grey">Mot de passe</label>
@@ -156,7 +151,7 @@ export const AuthPage = () => {
                     <div>
                         <button
                             type="submit"
-                            className="flex w-full justify-center rounded-md bg-yellow-150 px-3 py-1.5 text-sm/6 font-semibold text-dark-grey hover:bg-yellow-150/80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-150"
+                            className="flex w-full justify-center rounded-md bg-yellow-150 px-3 py-1.5 text-sm/6 font-semibold text-dark-grey hover:bg-yellow-150/80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-150 transition-colors"
                         >
                             {isSignUp ? "Créer mon compte" : 'Se connecter'}
                         </button>

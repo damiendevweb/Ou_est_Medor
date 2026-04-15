@@ -1,13 +1,13 @@
 {
-    "name": "DoggyTracker",
-    "short_name": "DoggyTracker",
+    "name": "Où est Médor ?",
+    "short_name": "Où est Médor ?",
     "description": "Suivi de localisation et gestion de vos chiens",
     "start_url": "/",
     "scope": "/",
     "display": "standalone",
     "orientation": "portrait-primary",
-    "theme_color": "#01696f",
-    "background_color": "#f7f6f2",
+    "theme_color": "#ffcc01",
+    "background_color": "#fcfcfc",
     "lang": "fr",
     "icons": [
         {

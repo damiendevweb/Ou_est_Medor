@@ -11,6 +11,8 @@ import { NavigationBar } from './components/NavigationBar'
 import { ProfilePage } from './pages/Profile'
 import { Footer } from './components/Footer'
 import { Contact } from './pages/Contact'
+import { ProductList } from './pages/ProductsList'
+import { ProductPage } from './pages/ProductPage'
 
 function App() {
   const { user, loading } = useAuth()
@@ -26,7 +28,6 @@ function App() {
   return (
     <div className="min-h-screen bg-light-grey flex flex-col">
       <NavigationBar />
-
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<AuthPage />} />
@@ -38,6 +39,8 @@ function App() {
           path="/profile"
           element={user ? <ProfilePage /> : <Navigate to="/login" />}
         />
+        <Route path='categorie/medaille-gravee' element={<ProductList />} />
+        <Route path='produit/:slug' element={<ProductPage />} />
         <Route path='generate-qr-code' element={<GenerateQR />} />
         <Route path='contact' element={<Contact />} />
 

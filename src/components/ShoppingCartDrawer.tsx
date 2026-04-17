@@ -36,7 +36,7 @@ const products = [
 ]
 
 export const ShoppingCartDrawer = () => {
-    const [open, setOpen] = useState(true)
+    const [open, setOpen] = useState(false)
 
     return (
         <>

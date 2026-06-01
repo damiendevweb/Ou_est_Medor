@@ -1,0 +1,7 @@
+[functions.push-notification]
+enabled = true
+verify_jwt = false
+
+[functions.notify-animal-owner]
+enabled = true
+verify_jwt = false

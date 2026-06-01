@@ -1,5 +1,12 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 
+export type CartCustomization = {
+  petName: string
+  phone1: string
+  phone2: string
+  font: string
+}
+
 export type CartItem = {
   id: string
   slug: string
@@ -7,6 +14,7 @@ export type CartItem = {
   price_cents: number
   image_url: string | null
   quantity: number
+  customization?: CartCustomization | null
 }
 
 type CartContextType = {

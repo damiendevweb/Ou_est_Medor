@@ -152,10 +152,10 @@ export const ShoppingCartDrawer = () => {
                                     <button
                                       type="button"
                                       onClick={() => removeFromCart(item.id)}
-                                      className="font-medium text-yellow-150 hover:opacity-75"
-                                    >
-                                      Remove
-                                    </button>
+                      className="font-medium text-orange-400 hover:opacity-75"
+                    >
+                      Supprimer
+                    </button>
                                   </div>
                                 </div>
                               </li>
@@ -177,7 +177,7 @@ export const ShoppingCartDrawer = () => {
                     <div className="mt-6">
                       <a
                         href="#"
-                        className="flex items-center justify-center rounded-md border border-transparent bg-yellow-150 px-6 py-3 text-base font-medium text-white shadow-xs hover:bg-yellow-150/80"
+                        className="flex items-center justify-center rounded-md border border-transparent bg-orange-400 px-6 py-3 text-base font-medium text-white shadow-xs hover:bg-orange-500"
                       >
                         Valider mon panier
                       </a>
@@ -189,7 +189,7 @@ export const ShoppingCartDrawer = () => {
                         <button
                           type="button"
                           onClick={() => setOpen(false)}
-                          className="font-medium text-yellow-150 hover:opacity-75"
+                          className="font-medium text-orange-400 hover:opacity-75"
                         >
                           continuer mes achats
                         </button>

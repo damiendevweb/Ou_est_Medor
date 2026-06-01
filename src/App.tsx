@@ -7,12 +7,16 @@ import { HomePage } from './pages/HomePage'
 import { Dashboard } from './pages/Dashboard'
 import { GenerateQR } from './pages/GenerateQR'
 import { ResetPasswordPage } from './pages/ResetPagePassword'
+import { ScrollToTop } from './components/ScrollToTop'
 import { NavigationBar } from './components/NavigationBar'
 import { ProfilePage } from './pages/Profile'
 import { Footer } from './components/Footer'
 import { Contact } from './pages/Contact'
 import { ProductList } from './pages/ProductsList'
 import { ProductPage } from './pages/ProductPage'
+import { BlogPostPage } from './pages/BlogPostPage'
+import { NotreHistoire } from './pages/NotreHistoire'
+import { LeConcept } from './pages/LeConcept'
 
 function App() {
   const { user, loading } = useAuth()
@@ -27,6 +31,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-light-grey flex flex-col">
+      <ScrollToTop />
       <NavigationBar />
       <Routes>
         <Route path="/" element={<HomePage />} />
@@ -43,6 +48,9 @@ function App() {
         <Route path='produit/:slug' element={<ProductPage />} />
         <Route path='generate-qr-code' element={<GenerateQR />} />
         <Route path='contact' element={<Contact />} />
+        <Route path='notre-histoire' element={<NotreHistoire />} />
+        <Route path='le-concept' element={<LeConcept />} />
+        <Route path='blog/:slug' element={<BlogPostPage />} />
 
         <Route path="/:animalId" element={<AnimalPage />} />
 

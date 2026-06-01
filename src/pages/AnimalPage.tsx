@@ -5,7 +5,6 @@ import { useGeolocation } from '../hooks/useGeolocation'
 import { useReverseGeocoding } from '../hooks/useReverseGeocoding'
 import { useAge } from '../hooks/useAge'
 
-
 type Animal = {
     id: string
     nom: string
@@ -41,7 +40,6 @@ export const AnimalPage = () => {
 
     const { display: ageDisplay } = useAge(formData.birth_date)
 
-
     const {
         latitude: lat,
         longitude: lng,
@@ -64,9 +62,7 @@ export const AnimalPage = () => {
             const now = Date.now()
             const last = sessionStorage.getItem(key)
 
-            if (last && now - Number(last) < 2 * 60 * 1000) {
-                return
-            }
+            if (last && now - Number(last) < 2 * 60 * 1000) return
 
             const { error } = await supabase.from('animal_access_events').insert({
                 animal_id: id,
@@ -121,10 +117,7 @@ export const AnimalPage = () => {
         }
 
         void fetchAnimal()
-
-        return () => {
-            cancelled = true
-        }
+        return () => { cancelled = true }
     }, [normalizedAnimalId])
 
     useEffect(() => {
@@ -135,9 +128,7 @@ export const AnimalPage = () => {
         const last = sessionStorage.getItem(key)
         const now = Date.now()
 
-        if (last && now - Number(last) < 2 * 60 * 1000) {
-            return
-        }
+        if (last && now - Number(last) < 2 * 60 * 1000) return
 
         let cancelled = false
 
@@ -178,10 +169,10 @@ export const AnimalPage = () => {
 
     if (loading) {
         return (
-            <div className="min-h-screen flex items-center justify-center">
+            <div className="min-h-screen flex items-center justify-center bg-light-grey">
                 <div className="text-center">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                    <p>Chargement de {normalizedAnimalId}</p>
+                    <div className="w-14 h-14 rounded-full border-4 border-orange-300 border-t-orange-400 animate-spin mx-auto mb-4" />
+                    <p className="text-text-secondary">Chargement de {normalizedAnimalId}</p>
                 </div>
             </div>
         )
@@ -189,15 +180,14 @@ export const AnimalPage = () => {
 
     if (error || !animal) {
         return (
-            <div className="min-h-screen flex items-center justify-center">
+            <div className="min-h-screen flex items-center justify-center bg-light-grey">
                 <div className="text-center p-8 max-w-md">
-                    <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                        🐶 {normalizedAnimalId}
-                    </h2>
-                    <p className="text-xl text-gray-500 mb-8">{error || 'Animal introuvable'}</p>
-                    <p className="text-sm text-gray-400">
-                        Vérifier l'ID ou{' '}
-                        <Link to="/" className="underline hover:opacity-70 font-medium">retourner sur la page d'accueil</Link>
+                    <span className="text-6xl block mb-4">🐶</span>
+                    <h2 className="text-4xl font-bold text-dark-grey mb-2">{normalizedAnimalId}</h2>
+                    <p className="text-lg text-text-secondary mb-6">{error || 'Animal introuvable'}</p>
+                    <p className="text-sm text-text-secondary">
+                        Vérifie l'ID ou{' '}
+                        <Link to="/" className="text-orange-400 hover:underline font-medium">retourne à l'accueil</Link>
                     </p>
                 </div>
             </div>
@@ -206,42 +196,30 @@ export const AnimalPage = () => {
 
     if (isFicheEmpty) {
         return (
-            <div className="min-h-screen flex flex-col items-center justify-center px-4 py-12 text-center bg-linear-to-br from-yellow-50 to-orange-50">
-                <div className="max-w-md p-8 bg-white rounded-3xl shadow-2xl border-4 border-dashed border-yellow-200">
-                    <div className="w-24 h-24 bg-linear-to-r from-yellow-400 to-orange-500 rounded-2xl mx-auto mb-6 flex items-center justify-center shadow-lg">
-                        <span className="text-3xl font-bold text-white">🐕</span>
+            <div className="min-h-screen flex flex-col items-center justify-center px-4 py-12 text-center bg-light-grey">
+                <div className="max-w-md p-8 bg-white rounded-3xl shadow-xl border-t-4 border-yellow-300">
+                    <div className="w-20 h-20 bg-gradient-to-r from-orange-400 to-yellow-300 rounded-2xl mx-auto mb-6 flex items-center justify-center shadow-lg">
+                        <span className="text-3xl">🐕</span>
                     </div>
-
-                    <h2 className="text-3xl font-bold text-gray-900 mb-4">
+                    <h2 className="text-3xl font-bold text-dark-grey mb-4">
                         Fiche {normalizedAnimalId}
                     </h2>
-
-                    <p className="text-xl text-gray-700 mb-6 leading-relaxed">
+                    <p className="text-dark-grey mb-4 leading-relaxed">
                         La fiche de ce chien <strong>n'est pas encore remplie</strong>.<br />
-                        <span className="text-orange-600 font-semibold">Est-ce bien le vôtre ?</span>
+                        <span className="text-orange-400 font-bold">C'est le vôtre ?</span>
                     </p>
-
-                    <div className="space-y-4 mb-8">
-                        <div className="bg-orange-50 border-2 border-orange-200 rounded-xl p-4">
-                            <p className="text-sm font-medium text-orange-800">
-                                👆 <strong>Inscrivez-vous ici</strong> pour remplir sa fiche complète
-                            </p>
-                        </div>
-                        <p className="text-xs text-gray-500">
-                            Nom, race, âge, contacts, vétérinaire...
+                    <div className="bg-orange-100 rounded-2xl p-4 mb-6">
+                        <p className="text-sm font-medium text-dark-grey">
+                            👆 <strong>Inscris-toi</strong> pour remplir sa fiche complète
                         </p>
                     </div>
-
-                    <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                        <a
-                            href={`/login?mode=signup&animal=${normalizedAnimalId}`}
-                            className="flex-1 bg-linear-to-r from-orange-500 to-yellow-500from-orange-600to-yellow-600 text-white py-4 px-8 rounded-2xl font-bold text-lg shadow-xlshadow-orange-500/25 transition-all text-center"
-                        >
-                            ✍️ Remplir ma fiche
-                        </a>
-                    </div>
-
-                    <p className="text-xs text-gray-400 mt-6 font-mono bg-gray-50 px-3 py-1 rounded-full inline-block">
+                    <a
+                        href={`/login?mode=signup&animal=${normalizedAnimalId}`}
+                        className="inline-block w-full bg-orange-400 hover:bg-orange-500 text-white font-bold py-4 px-8 rounded-full shadow-lg hover:shadow-xl transition-all text-center"
+                    >
+                        ✍️ Remplir ma fiche
+                    </a>
+                    <p className="text-xs text-text-secondary mt-6 font-mono bg-light-grey px-3 py-1 rounded-full inline-block">
                         ID: {normalizedAnimalId}
                     </p>
                 </div>
@@ -250,87 +228,79 @@ export const AnimalPage = () => {
     }
 
     return (
-        <div className="max-w-2xl mx-auto p-8">
-            <div className="bg-linear-to-r from-blue-50 to-indigo-50 rounded-2xl p-8 shadow-xl border mb-8">
-
-                <div className="max-w-2xl mx-auto p-8">
-                    <span className="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm font-mono">
-                        {animal.id}
-                    </span>
-                    <div className='bg-white p-6 rounded-xl shadow-sm mb-8'>
-                        <h2 className="text-3xl font-bold text-gray-900 mb-2">{animal.nom}</h2>
-                        <p className="text-xl text-gray-600">{animal.race}</p>
+        <div className="min-h-screen bg-light-grey py-12">
+            <div className="max-w-2xl mx-auto px-4">
+                <div className="bg-white rounded-3xl shadow-lg overflow-hidden border-t-4 border-orange-300">
+                    <div className="bg-gradient-to-r from-orange-400 to-yellow-300 p-8 text-white text-center">
+                        <span className="text-6xl block mb-2">🐾</span>
+                        <h1 className="text-4xl font-bold">{animal.nom}</h1>
+                        <p className="text-white/80 text-lg">{animal.race}</p>
+                        <span className="inline-block mt-3 bg-white/20 backdrop-blur-sm rounded-full px-3 py-1 text-xs font-mono">
+                            {animal.id}
+                        </span>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                        <div className="bg-white p-6 rounded-xl shadow-sm">
-                            <h3 className="font-semibold mb-3">📊 Infos physiques</h3>
-                            <p>
-                                <span className="font-medium">Âge :</span> {ageDisplay}
-                            </p>
-                            <p>
-                                <span className="font-medium">Poids :</span> {animal.poids} kg
-                            </p>
-                        </div>
-
-                        <div className="bg-white p-6 rounded-xl shadow-sm">
-                            <h3 className="font-semibold mb-3">👥 Compatibilités</h3>
-                            <span
-                                className={`inline-block px-3 py-1 rounded-full text-sm mr-2 mb-2 ${animal.ok_congenere
-                                    ? 'bg-green-100 text-green-800'
-                                    : 'bg-red-100 text-red-800'
-                                    }`}
-                            >
-                                {animal.ok_congenere ? '✓ Congénères' : '✗ Congénères'}
-                            </span>
-                            <span
-                                className={`inline-block px-3 py-1 rounded-full text-sm ${animal.ok_enfants ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                                    }`}
-                            >
-                                {animal.ok_enfants ? '✓ Enfants' : '✗ Enfants'}
-                            </span>
-                        </div>
-                    </div>
-
-                    <div className="bg-white p-6 rounded-xl shadow-sm">
-                        <h3 className="font-semibold mb-4">📞 Contacts</h3>
+                    <div className="p-6 md:p-8 space-y-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <p>
-                                👤 <strong>{animal.prenom_proprietaire}</strong>
-                            </p>
-                            <p>
-                                📱 <a href={`tel:${animal.telephone_1}`} className="underline hover:opacity-70">
-                                    {animal.telephone_1}
-                                </a>
-                                {animal.telephone_2 && (
-                                    <>
-                                        {' | '}
-                                        <a href={`tel:${animal.telephone_2}`} className="underline hover:opacity-70 opacity-80">
-                                            {animal.telephone_2}
+                            <div className="bg-light-grey rounded-2xl p-5">
+                                <h3 className="font-bold text-dark-grey mb-3 text-sm uppercase tracking-wider">📊 Infos physiques</h3>
+                                <div className="space-y-2 text-sm">
+                                    <p className="flex justify-between"><span className="text-text-secondary">Âge</span><span className="font-medium text-dark-grey">{ageDisplay}</span></p>
+                                    <p className="flex justify-between"><span className="text-text-secondary">Poids</span><span className="font-medium text-dark-grey">{animal.poids} kg</span></p>
+                                </div>
+                            </div>
+
+                            <div className="bg-light-grey rounded-2xl p-5">
+                                <h3 className="font-bold text-dark-grey mb-3 text-sm uppercase tracking-wider">👥 Compatibilités</h3>
+                                <div className="flex flex-wrap gap-2">
+                                    <span className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-medium ${animal.ok_congenere ? 'bg-green-200 text-green-700' : 'bg-red-200 text-red-700'}`}>
+                                        {animal.ok_congenere ? '✓ Congénères' : '✗ Congénères'}
+                                    </span>
+                                    <span className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-medium ${animal.ok_enfants ? 'bg-green-200 text-green-700' : 'bg-red-200 text-red-700'}`}>
+                                        {animal.ok_enfants ? '✓ Enfants' : '✗ Enfants'}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="bg-light-grey rounded-2xl p-5">
+                            <h3 className="font-bold text-dark-grey mb-3 text-sm uppercase tracking-wider">📞 Contacts</h3>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                                <div>
+                                    <p className="text-text-secondary text-xs">Propriétaire</p>
+                                    <p className="font-medium text-dark-grey">{animal.prenom_proprietaire}</p>
+                                </div>
+                                <div>
+                                    <p className="text-text-secondary text-xs">Téléphone</p>
+                                    <p className="font-medium">
+                                        <a href={`tel:${animal.telephone_1}`} className="text-orange-400 hover:underline">
+                                            {animal.telephone_1}
                                         </a>
-                                    </>
-                                )}
-                            </p>
-                            <p>
-                                ✉️{' '}
-                                <a href={`mailto:${animal.mail_1}`} className="underline hover:opacity-70">
-                                    {animal.mail_1}
-                                </a>
-                                {animal.mail_2 && (
-                                    <>
-                                        {' | '}
-                                        <a href={`mailto:${animal.mail_2}`} className="underline hover:opacity-70">
-                                            {animal.mail_2}
+                                        {animal.telephone_2 && (
+                                            <> · <a href={`tel:${animal.telephone_2}`} className="text-orange-400 hover:underline opacity-80">{animal.telephone_2}</a></>
+                                        )}
+                                    </p>
+                                </div>
+                                <div>
+                                    <p className="text-text-secondary text-xs">Email</p>
+                                    <p className="font-medium">
+                                        <a href={`mailto:${animal.mail_1}`} className="text-orange-400 hover:underline">
+                                            {animal.mail_1}
                                         </a>
-                                    </>
-                                )}
-                            </p>
-                            <p>
-                                🏥 Vétérinaire :{' '}
-                                <a href={`tel:${animal.telephone_veterinaire}`} className="underline hover:opacity-70">
-                                    {animal.telephone_veterinaire}
-                                </a>
-                            </p>
+                                        {animal.mail_2 && (
+                                            <> · <a href={`mailto:${animal.mail_2}`} className="text-orange-400 hover:underline opacity-80">{animal.mail_2}</a></>
+                                        )}
+                                    </p>
+                                </div>
+                                <div>
+                                    <p className="text-text-secondary text-xs">Vétérinaire</p>
+                                    <p className="font-medium">
+                                        <a href={`tel:${animal.telephone_veterinaire}`} className="text-orange-400 hover:underline">
+                                            {animal.telephone_veterinaire}
+                                        </a>
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -1,78 +1,162 @@
 export const Contact = () => {
     return (
-        <div className="isolate bg-white px-6 py-24 sm:py-32 lg:px-8">
-            <div className="mx-auto max-w-2xl text-center">
-                <h2 className="text-4xl font-semibold tracking-tight text-balance text-gray-900 sm:text-5xl">Contact sales</h2>
-                <p className="mt-2 text-lg/8 text-gray-600">Aute magna irure deserunt veniam aliqua magna enim voluptate.</p>
+        <div className="min-h-screen bg-light-grey">
+            <div className="relative py-20 overflow-hidden">
+                <div className="absolute inset-0 pointer-events-none">
+                    <span className="absolute top-10 left-[10%] text-5xl opacity-10 animate-float-slow">🐾</span>
+                    <span className="absolute bottom-10 right-[15%] text-4xl opacity-10 animate-float">🐶</span>
+                    <span className="absolute top-1/2 right-[25%] text-3xl opacity-10 animate-float" style={{ animationDelay: '1s' }}>🦴</span>
+                </div>
+                <div className="max-w-4xl mx-auto px-6 text-center relative">
+                    <span className="inline-block text-5xl mb-4">💌</span>
+                    <h1 className="text-4xl md:text-5xl font-bold text-dark-grey mb-4">
+                        On reste en contact ?
+                    </h1>
+                    <p className="text-lg text-text-secondary max-w-2xl mx-auto">
+                        Une question, un doute, une histoire de retrouvailles à partager ? On est là pour vous répondre.
+                    </p>
+                </div>
             </div>
-            <form action="#" method="POST" className="mx-auto mt-16 max-w-xl sm:mt-20">
-                <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
-                    <div>
-                        <label htmlFor="first-name" className="block text-sm/6 font-semibold text-gray-900">First name</label>
-                        <div className="mt-2.5">
-                            <input id="first-name" type="text" name="first-name" autoComplete="given-name" className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600" />
-                        </div>
-                    </div>
-                    <div>
-                        <label htmlFor="last-name" className="block text-sm/6 font-semibold text-gray-900">Last name</label>
-                        <div className="mt-2.5">
-                            <input id="last-name" type="text" name="last-name" autoComplete="family-name" className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600" />
-                        </div>
-                    </div>
-                    <div className="sm:col-span-2">
-                        <label htmlFor="company" className="block text-sm/6 font-semibold text-gray-900">Company</label>
-                        <div className="mt-2.5">
-                            <input id="company" type="text" name="company" autoComplete="organization" className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600" />
-                        </div>
-                    </div>
-                    <div className="sm:col-span-2">
-                        <label htmlFor="email" className="block text-sm/6 font-semibold text-gray-900">Email</label>
-                        <div className="mt-2.5">
-                            <input id="email" type="email" name="email" autoComplete="email" className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600" />
-                        </div>
-                    </div>
-                    <div className="sm:col-span-2">
-                        <label htmlFor="phone-number" className="block text-sm/6 font-semibold text-gray-900">Phone number</label>
-                        <div className="mt-2.5">
-                            <div className="flex rounded-md bg-white outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-600">
-                                <div className="grid shrink-0 grid-cols-1 focus-within:relative">
-                                    <select id="country" name="country" autoComplete="country" aria-label="Country" className="col-start-1 row-start-1 w-full appearance-none rounded-md py-2 pr-7 pl-3.5 text-base text-gray-500 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
-                                        <option>US</option>
-                                        <option>CA</option>
-                                        <option>EU</option>
-                                    </select>
-                                    <svg viewBox="0 0 16 16" fill="currentColor" data-slot="icon" aria-hidden="true" className="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4">
-                                        <path d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
-                                    </svg>
-                                </div>
-                                <input id="phone-number" type="text" name="phone-number" placeholder="123-456-7890" className="block min-w-0 grow py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6" />
-                            </div>
-                        </div>
-                    </div>
-                    <div className="sm:col-span-2">
-                        <label htmlFor="message" className="block text-sm/6 font-semibold text-gray-900">Message</label>
-                        <div className="mt-2.5">
-                            <textarea id="message" name="message" className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"></textarea>
-                        </div>
-                    </div>
-                    <div className="flex gap-x-4 sm:col-span-2">
-                        <div className="flex h-6 items-center">
-                            <div className="group relative inline-flex w-8 shrink-0 rounded-full bg-gray-200 p-px inset-ring inset-ring-gray-900/5 outline-offset-2 outline-indigo-600 transition-colors duration-200 ease-in-out has-checked:bg-indigo-600 has-focus-visible:outline-2">
-                                <span className="size-4 rounded-full bg-white shadow-xs ring-1 ring-gray-900/5 transition-transform duration-200 ease-in-out group-has-checked:translate-x-3.5"></span>
-                                <input id="agree-to-policies" type="checkbox" name="agree-to-policies" aria-label="Agree to policies" className="absolute inset-0 size-full appearance-none focus:outline-hidden" />
-                            </div>
-                        </div>
-                        <label htmlFor="agree-to-policies" className="text-sm/6 text-gray-600">
-                            By selecting this, you agree to our
-                            <a href="#" className="font-semibold whitespace-nowrap text-indigo-600">privacy policy</a>.
-                        </label>
-                    </div>
-                </div>
-                <div className="mt-10">
-                    <button type="submit" className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Let's talk</button>
-                </div>
-            </form>
-        </div>
 
+            <div className="max-w-6xl mx-auto px-6 pb-20">
+                <div className="grid md:grid-cols-3 gap-6 mb-16">
+                    <div className="bg-white rounded-3xl p-6 shadow-lg text-center hover:shadow-xl transition-all border-t-4 border-orange-300">
+                        <div className="w-14 h-14 bg-orange-100 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4">📧</div>
+                        <h3 className="font-bold text-dark-grey mb-2">Email</h3>
+                        <p className="text-text-secondary text-sm">contact@ouestmedor.fr</p>
+                        <p className="text-text-secondary text-sm">Réponse sous 24h</p>
+                    </div>
+                    <div className="bg-white rounded-3xl p-6 shadow-lg text-center hover:shadow-xl transition-all border-t-4 border-yellow-300">
+                        <div className="w-14 h-14 bg-yellow-200 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4">📞</div>
+                        <h3 className="font-bold text-dark-grey mb-2">Téléphone</h3>
+                        <p className="text-text-secondary text-sm">01 23 45 67 89</p>
+                        <p className="text-text-secondary text-sm">Lun-Ven 9h-18h</p>
+                    </div>
+                    <div className="bg-white rounded-3xl p-6 shadow-lg text-center hover:shadow-xl transition-all border-t-4 border-pink-300">
+                        <div className="w-14 h-14 bg-pink-200 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4">📍</div>
+                        <h3 className="font-bold text-dark-grey mb-2">Adresse</h3>
+                        <p className="text-text-secondary text-sm">12 Rue des Toutous</p>
+                        <p className="text-text-secondary text-sm">75000 Paris</p>
+                    </div>
+                </div>
+
+                <div className="max-w-2xl mx-auto">
+                    <div className="bg-white rounded-3xl shadow-lg p-8 md:p-10 border-t-4 border-orange-300">
+                        <h2 className="text-2xl font-bold text-dark-grey mb-2">Envoie-nous un message</h2>
+                        <p className="text-text-secondary text-sm mb-8">Tous les champs marqués d'un * sont obligatoires.</p>
+
+                        <form className="space-y-6">
+                            <div className="grid sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-sm font-semibold text-dark-grey mb-1.5">
+                                        Prénom <span className="text-orange-400">*</span>
+                                    </label>
+                                    <input
+                                        type="text"
+                                        placeholder="Sophie"
+                                        className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-orange-400 focus:outline-none transition-colors bg-light-grey text-dark-grey placeholder:text-gray-400"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-semibold text-dark-grey mb-1.5">
+                                        Nom <span className="text-orange-400">*</span>
+                                    </label>
+                                    <input
+                                        type="text"
+                                        placeholder="Martin"
+                                        className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-orange-400 focus:outline-none transition-colors bg-light-grey text-dark-grey placeholder:text-gray-400"
+                                    />
+                                </div>
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-semibold text-dark-grey mb-1.5">
+                                    Email <span className="text-orange-400">*</span>
+                                </label>
+                                <input
+                                    type="email"
+                                    placeholder="sophie@exemple.fr"
+                                    className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-orange-400 focus:outline-none transition-colors bg-light-grey text-dark-grey placeholder:text-gray-400"
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-semibold text-dark-grey mb-1.5">
+                                    Téléphone <span className="text-text-secondary">(optionnel)</span>
+                                </label>
+                                <input
+                                    type="tel"
+                                    placeholder="06 01 02 03 04"
+                                    className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-orange-400 focus:outline-none transition-colors bg-light-grey text-dark-grey placeholder:text-gray-400"
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-semibold text-dark-grey mb-1.5">
+                                    Sujet <span className="text-orange-400">*</span>
+                                </label>
+                                <select className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-orange-400 focus:outline-none transition-colors bg-light-grey text-dark-grey">
+                                    <option value="">Sélectionne un sujet</option>
+                                    <option value="produit">Question sur un produit</option>
+                                    <option value="commande">Suivi de commande</option>
+                                    <option value="retrouvailles">Témoignage de retrouvailles</option>
+                                    <option value="partenariat">Partenariat</option>
+                                    <option value="autre">Autre</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-semibold text-dark-grey mb-1.5">
+                                    Message <span className="text-orange-400">*</span>
+                                </label>
+                                <textarea
+                                    rows={5}
+                                    placeholder="Dis-nous tout..."
+                                    className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-orange-400 focus:outline-none transition-colors bg-light-grey text-dark-grey placeholder:text-gray-400 resize-y"
+                                />
+                            </div>
+
+                            <div className="flex items-start gap-3">
+                                <input
+                                    id="consent"
+                                    type="checkbox"
+                                    className="mt-1 w-4 h-4 rounded border-gray-300 text-orange-400 focus:ring-orange-400"
+                                />
+                                <label htmlFor="consent" className="text-sm text-text-secondary">
+                                    J'accepte que mes données soient traitées pour répondre à ma demande.{' '}
+                                    <a href="#" className="text-orange-400 hover:underline">Politique de confidentialité</a>.
+                                </label>
+                            </div>
+
+                            <button
+                                type="submit"
+                                className="w-full bg-orange-400 hover:bg-orange-500 text-white font-bold text-lg px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-[1.02]"
+                            >
+                                <span className="flex items-center justify-center gap-2">
+                                    Envoyer mon message
+                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                    </svg>
+                                </span>
+                            </button>
+                        </form>
+                    </div>
+
+                    <div className="mt-8 bg-gradient-to-r from-orange-400 via-pink-300 to-purple-300 rounded-3xl p-8 text-center text-white">
+                        <span className="inline-block text-4xl mb-3">🐕</span>
+                        <h3 className="text-2xl font-bold mb-2">Besoin d'aide rapidement ?</h3>
+                        <p className="text-white/80 mb-6">
+                            Consulte notre FAQ pour trouver une réponse immédiate à tes questions.
+                        </p>
+                        <a
+                            href="#"
+                            className="inline-block bg-white text-dark-grey font-bold px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105"
+                        >
+                            Voir la FAQ
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     )
 }

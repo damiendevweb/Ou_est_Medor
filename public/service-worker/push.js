@@ -5,15 +5,24 @@ self.addEventListener('push', onPush)
 
 function onPush(event) {
   if (!event.data) return
-  const data = event.data.json()
-  const { title, ...rest } = data
-  event.waitUntil((async () => {
-    const clients = await self.clients.matchAll({ type: 'window', includeUncontrolled: true })
-    clients.forEach((client) => client.postMessage(data))
-    await self.registration.showNotification(title, {
-      ...rest,
-    })
-  })())
+  try {
+    const data = event.data.json()
+    const { title, body, icon, data: extraData, ...rest } = data
+    const safeTitle = title || 'DoggyTracker'
+    event.waitUntil((async () => {
+      const clients = await self.clients.matchAll({ type: 'window', includeUncontrolled: true })
+      clients.forEach((client) => client.postMessage(data))
+      await self.registration.showNotification(safeTitle, {
+        body: body || '',
+        icon: icon || '/icons/icon-192x192.png',
+        data: { url: rest.url || extraData?.url || '/dashboard' },
+        requireInteraction: true,
+        ...rest,
+      })
+    })())
+  } catch (err) {
+    console.error('Push handler error:', err)
+  }
 }
 
 self.addEventListener('notificationclick', (event) => {

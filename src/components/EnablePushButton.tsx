@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
 
-const VAPID_PUBLIC_KEY = 'BLLo_5JbZd_ag8cYUy6L5CT6ZzbkqIxMnHqkOWlvGcS0XnIIK4Iip6vS1kWaY_PcwJXnNPwjGMiyi8sj_wRtdbs'
+const VAPID_PUBLIC_KEY = import.meta.env.VITE_VAPID_PUBLIC_KEY
 
 function urlBase64ToUint8Array(base64String: string) {
     const padding = '='.repeat((4 - (base64String.length % 4)) % 4)
@@ -14,6 +14,7 @@ export default function EnablePushButton() {
     const [isSupported, setIsSupported] = useState(false)
     const [isEnabled, setIsEnabled] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
+    const [isUnsubscribing, setIsUnsubscribing] = useState(false)
     const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
     useEffect(() => {
@@ -44,23 +45,16 @@ export default function EnablePushButton() {
                 setIsLoading(false)
             }
         }
-
         void checkPushStatus()
     }, [])
 
     useEffect(() => {
         if (!errorMessage) return
-
-        const timeout = window.setTimeout(() => {
-            setErrorMessage(null)
-        }, 5000)
-
+        const timeout = window.setTimeout(() => setErrorMessage(null), 5000)
         return () => window.clearTimeout(timeout)
     }, [errorMessage])
 
-    const showError = (text: string) => {
-        setErrorMessage(text)
-    }
+    const showError = (text: string) => setErrorMessage(text)
 
     const enablePush = async () => {
         try {
@@ -69,8 +63,8 @@ export default function EnablePushButton() {
             const { data: userData } = await supabase.auth.getUser()
             const user = userData.user
             if (!user) {
-            showError('Vous devez être connecté pour activer les notifications.')
-            return
+                showError('Connecte-toi pour activer les notifications.')
+                return
             }
 
             if (
@@ -78,18 +72,16 @@ export default function EnablePushButton() {
                 !('serviceWorker' in navigator) ||
                 !('PushManager' in window)
             ) {
-                showError('Les notifications ne sont pas supportées sur cet appareil.')
+                showError('Notifications non supportées sur cet appareil.')
                 return
             }
 
             let permission = Notification.permission
-
             if (permission !== 'granted') {
                 permission = await Notification.requestPermission()
             }
-
             if (permission !== 'granted') {
-                showError('Vous devez autoriser les notifications dans votre navigateur.')
+                showError('Autorise les notifications dans ton navigateur.')
                 return
             }
 
@@ -116,47 +108,82 @@ export default function EnablePushButton() {
             )
 
             if (error) {
-                showError("Impossible d'enregistrer les notifications pour le moment.")
+                showError('Erreur lors de l\'enregistrement.')
                 return
             }
 
             setIsEnabled(true)
         } catch {
-            showError("Impossible d'activer les notifications pour le moment.")
+            showError('Impossible d\'activer les notifications.')
         }
     }
 
-    if (isLoading || !isSupported || isEnabled) {
-        return null
+    const disablePush = async () => {
+        setIsUnsubscribing(true)
+        setErrorMessage(null)
+        try {
+            const registration = await navigator.serviceWorker.ready
+            const subscription = await registration.pushManager.getSubscription()
+
+            if (subscription) {
+                await subscription.unsubscribe()
+            }
+
+            const { data: userData } = await supabase.auth.getUser()
+            if (userData.user) {
+                await supabase
+                    .from('push_subscriptions')
+                    .delete()
+                    .eq('user_id', userData.user.id)
+            }
+
+            setIsEnabled(false)
+        } catch {
+            showError('Impossible de désactiver les notifications.')
+        } finally {
+            setIsUnsubscribing(false)
+        }
     }
+
+    if (isLoading || !isSupported) return null
 
     return (
         <>
-            <button
-                type="button"
-                onClick={enablePush}
-                aria-label="Activer les notifications"
-                title="Activer les notifications"
-                className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full shadow-xl transition-all duration-200 bg-blue-600 text-white hover:bg-blue-700 active:scale-95"
-            >
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="relative h-6 w-6"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    aria-hidden="true"
+            {isEnabled ? (
+                <button
+                    type="button"
+                    onClick={disablePush}
+                    disabled={isUnsubscribing}
+                    aria-label="Désactiver les notifications"
+                    title="Notifications activées — cliquer pour désactiver"
+                    className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full shadow-xl transition-all duration-200 bg-green-400 text-white hover:bg-green-500 active:scale-95 disabled:opacity-50"
                 >
-                    <path d="M12 2a6 6 0 00-6 6v3.586L4.293 13.293A1 1 0 005 15h14a1 1 0 00.707-1.707L18 11.586V8a6 6 0 00-6-6zm0 20a3 3 0 002.995-2.824L15 19h-6a3 3 0 002.824 2.995L12 22z" />
-                </svg>
-            </button>
+                    <svg className="relative h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2a6 6 0 00-6 6v3.586L4.293 13.293A1 1 0 005 15h14a1 1 0 00.707-1.707L18 11.586V8a6 6 0 00-6-6zm0 20a3 3 0 002.995-2.824L15 19h-6a3 3 0 002.824 2.995L12 22z" />
+                        <line x1="4" y1="4" x2="20" y2="20" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    </svg>
+                </button>
+            ) : (
+                <button
+                    type="button"
+                    onClick={enablePush}
+                    aria-label="Activer les notifications"
+                    title="Activer les notifications"
+                    className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full shadow-xl transition-all duration-200 bg-orange-400 text-white hover:bg-orange-500 active:scale-95"
+                >
+                    <svg className="relative h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2a6 6 0 00-6 6v3.586L4.293 13.293A1 1 0 005 15h14a1 1 0 00.707-1.707L18 11.586V8a6 6 0 00-6-6zm0 20a3 3 0 002.995-2.824L15 19h-6a3 3 0 002.824 2.995L12 22z" />
+                    </svg>
+                </button>
+            )}
 
             {errorMessage && (
                 <div
-                className="fixed bottom-24 right-6 z-50 max-w-xs rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 shadow-lg"
-                role="status"
-                aria-live="polite"
+                    className="fixed bottom-24 right-6 z-50 max-w-xs rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 shadow-lg"
+                    role="status"
+                    aria-live="polite"
                 >
-                {errorMessage}
+                    {errorMessage}
                 </div>
             )}
         </>

@@ -66,7 +66,7 @@ export const HeroBanner = () => {
                                 src={herobanner_visual}
                                 alt="Chien avec médaille connectée"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-dark-grey/20 to-transparent" />
+                            <div className="absolute inset-0 bg-linear-to-t from-dark-grey/20 to-transparent" />
                         </div>
 
                         <div className="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-xl p-4 flex items-center gap-3 animate-float-slow">

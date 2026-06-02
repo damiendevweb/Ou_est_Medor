@@ -198,7 +198,7 @@ export const AnimalPage = () => {
         return (
             <div className="min-h-screen flex flex-col items-center justify-center px-4 py-12 text-center bg-light-grey">
                 <div className="max-w-md p-8 bg-white rounded-3xl shadow-xl border-t-4 border-yellow-300">
-                    <div className="w-20 h-20 bg-gradient-to-r from-orange-400 to-yellow-300 rounded-2xl mx-auto mb-6 flex items-center justify-center shadow-lg">
+                    <div className="w-20 h-20 bg-linear-to-r from-orange-400 to-yellow-300 rounded-2xl mx-auto mb-6 flex items-center justify-center shadow-lg">
                         <span className="text-3xl">🐕</span>
                     </div>
                     <h2 className="text-3xl font-bold text-dark-grey mb-4">
@@ -231,7 +231,7 @@ export const AnimalPage = () => {
         <div className="min-h-screen bg-light-grey py-12">
             <div className="max-w-2xl mx-auto px-4">
                 <div className="bg-white rounded-3xl shadow-lg overflow-hidden border-t-4 border-orange-300">
-                    <div className="bg-gradient-to-r from-orange-400 to-yellow-300 p-8 text-white text-center">
+                    <div className="bg-linear-to-r from-orange-400 to-yellow-300 p-8 text-white text-center">
                         <span className="text-6xl block mb-2">🐾</span>
                         <h1 className="text-4xl font-bold">{animal.nom}</h1>
                         <p className="text-white/80 text-lg">{animal.race}</p>

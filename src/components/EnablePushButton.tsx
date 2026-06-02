@@ -113,7 +113,8 @@ export default function EnablePushButton() {
             }
 
             setIsEnabled(true)
-        } catch {
+        } catch (err) {
+            console.error('EnablePush error:', err)
             showError('Impossible d\'activer les notifications.')
         }
     }

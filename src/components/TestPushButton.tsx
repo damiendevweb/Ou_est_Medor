@@ -7,7 +7,9 @@ export default function TestPushButton() {
     })
 
     if (error) {
-      alert('Erreur: ' + error.message + (data ? '\nDétail: ' + JSON.stringify(data) : ''))
+      const detail = data ? '\n' + JSON.stringify(data) : ''
+      const context = error.context ? '\n' + JSON.stringify(error.context) : ''
+      alert(`Erreur ${error.status || ''}: ${error.message}${detail}${context}`)
     } else {
       alert(`Notification envoyée ! (${data?.sent || 0} appareil(s))`)
     }

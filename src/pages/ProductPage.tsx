@@ -1,45 +1,17 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { supabase } from '../lib/supabase'
 import { useCart } from '../context/CartContext'
-
-type ProductImage = {
-    id: string
-    image_url: string
-    image_alt: string | null
-    sort_order: number
-    is_primary: boolean
-}
-
-type Product = {
-    id: string
-    slug: string
-    name: string
-    description: string | null
-    price_cents: number
-    category: string | null
-    stock: number | null
-    is_active: boolean
-    product_images: ProductImage[]
-}
-
-const formatPrice = (priceCents: number) =>
-    new Intl.NumberFormat('fr-FR', {
-        style: 'currency',
-        currency: 'EUR',
-    }).format(priceCents / 100)
-
-const FONTS = [
-    { value: 'Fredoka', label: 'Fredoka', family: "'Fredoka', sans-serif", desc: 'Ronde et amicale' },
-    { value: 'DM Serif Display', label: 'Serif', family: "'DM Serif Display', serif", desc: 'Élégante et classique' },
-    { value: 'Poppins', label: 'Poppins', family: "'Poppins', sans-serif", desc: 'Moderne et épurée' },
-]
+import { useProduct } from '../hooks/useProduct'
+import { FONTS, formatPrice, validatePhone } from '../lib/product.types'
+import { ProductImageGallery } from '../components/ProductImageGallery'
+import { ProductMedalPreview } from '../components/ProductMedalPreview'
+import { ProductCustomization } from '../components/ProductCustomization'
+import { ProductAccordion } from '../components/ProductAccordion'
+import { ProductActions } from '../components/ProductActions'
 
 export const ProductPage = () => {
     const { slug } = useParams()
-    const [product, setProduct] = useState<Product | null>(null)
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState<string | null>(null)
+    const { product, loading, error, sortedImages } = useProduct(slug)
     const { addToCart } = useCart()
 
     const [petName, setPetName] = useState('')
@@ -50,64 +22,7 @@ export const ProductPage = () => {
     const [selectedFont, setSelectedFont] = useState(FONTS[0].value)
     const [added, setAdded] = useState(false)
 
-    const validatePhone = (value: string) => {
-        if (!value) return ''
-        if (value.length < 10) return 'Minimum 10 caractères'
-        if (value.length > 14) return 'Maximum 14 caractères'
-        if (/[^\d ]/.test(value)) return 'Seuls les chiffres et les espaces sont autorisés'
-        const digits = value.replace(/\s/g, '')
-        if (digits.length !== 10) return 'Le numéro doit contenir exactement 10 chiffres'
-        return ''
-    }
-
-    useEffect(() => {
-        const getProduct = async () => {
-            if (!slug) return
-            setLoading(true)
-            setError(null)
-
-            const { data, error } = await supabase
-                .from('products')
-                .select(`
-          id,
-          slug,
-          name,
-          description,
-          price_cents,
-          category,
-          stock,
-          is_active,
-          product_images (
-            id,
-            image_url,
-            image_alt,
-            sort_order,
-            is_primary
-          )
-        `)
-                .eq('slug', slug)
-                .eq('is_active', true)
-                .maybeSingle()
-
-            if (error) {
-                console.error(error)
-                setError('Impossible de charger ce produit.')
-                setProduct(null)
-            } else {
-                setProduct(data)
-            }
-            setLoading(false)
-        }
-        getProduct()
-    }, [slug])
-
-    const sortedImages = useMemo(() => {
-        if (!product?.product_images) return []
-        return [...product.product_images].sort((a, b) => a.sort_order - b.sort_order)
-    }, [product])
-
     const isFormValid = petName.trim() !== '' && phone1.trim() !== '' && !phone1Error && !phone2Error
-
     const isOutOfStock = product?.stock !== null && product?.stock !== undefined && product.stock <= 0
 
     const handleAddToCart = () => {
@@ -135,31 +50,6 @@ export const ProductPage = () => {
 
     const currentFont = FONTS.find(f => f.value === selectedFont)!
 
-    const [openAccordion, setOpenAccordion] = useState<string | null>(null)
-
-    const toggleAccordion = (name: string) => {
-        setOpenAccordion(openAccordion === name ? null : name)
-    }
-
-    const accordion = (name: string, label: string, content: React.ReactNode) => (
-        <div className="border-b border-gray-200">
-            <button
-                onClick={() => toggleAccordion(name)}
-                className="flex w-full items-center justify-between py-4 text-left text-sm font-semibold text-dark-grey hover:text-orange-400 transition-colors"
-            >
-                {label}
-                <svg className={`w-4 h-4 transition-transform ${openAccordion === name ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                </svg>
-            </button>
-            {openAccordion === name && (
-                <div className="pb-4 text-sm text-text-secondary leading-relaxed">
-                    {content}
-                </div>
-            )}
-        </div>
-    )
-
     if (loading) {
         return (
             <div className="min-h-screen bg-light-grey flex items-center justify-center">
@@ -184,35 +74,41 @@ export const ProductPage = () => {
         )
     }
 
+    const accordionItems = [
+        ...(product.description
+            ? [{ name: 'description', label: 'Description', content: <p>{product.description}</p> }]
+            : []),
+        {
+            name: 'caracteristiques',
+            label: 'Caractéristiques',
+            content: (
+                <ul className="space-y-2">
+                    <li className="flex justify-between"><span>Marque</span><span className="font-medium text-dark-grey">Parfs</span></li>
+                    <li className="flex justify-between"><span>Collection</span><span className="font-medium text-dark-grey">2022</span></li>
+                    <li className="flex justify-between"><span>Référence</span><span className="font-medium text-dark-grey">G480745</span></li>
+                    <li className="flex justify-between"><span>Matériau</span><span className="font-medium text-dark-grey">Acier inoxydable</span></li>
+                    <li className="flex justify-between"><span>Diamètre</span><span className="font-medium text-dark-grey">30 mm</span></li>
+                </ul>
+            ),
+        },
+        {
+            name: 'paiement',
+            label: 'Payment & delivery',
+            content: (
+                <div className="space-y-2">
+                    <p>Paiement sécurisé par carte bancaire (Stripe).</p>
+                    <p>Livraison offerte en France métropolitaine sous 5-7 jours ouvrés.</p>
+                </div>
+            ),
+        },
+    ]
+
     return (
         <div className="min-h-screen bg-white">
             <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
                 <div className="lg:grid lg:gap-16 lg:grid-cols-2 lg:items-start">
 
-                    <div className="space-y-4 lg:sticky lg:top-27">
-                        {sortedImages[0] && (
-                            <img
-                                src={sortedImages[0].image_url}
-                                alt={sortedImages[0].image_alt || product.name}
-                                className="aspect-square w-full object-cover"
-                            />
-                        )}
-
-                        {sortedImages.length > 1 && (
-                            <div className="grid grid-cols-2 gap-4">
-                                {sortedImages.slice(1, 3).map((image) => (
-                                    <img
-                                        key={image.id}
-                                        src={image.image_url}
-                                        alt={image.image_alt || product.name}
-                                        className="aspect-square w-full object-cover"
-                                    />
-                                ))}
-                            </div>
-                        )}
-
-
-                    </div>
+                    <ProductImageGallery images={sortedImages} productName={product.name} />
 
                     <div className="flex flex-col gap-8">
                         <div>
@@ -230,148 +126,29 @@ export const ProductPage = () => {
                             )}
                         </div>
 
-                        <div>
-                            <p className="text-xs tracking-[0.3em] text-text-secondary uppercase mb-3">Personnalisation</p>
+                        <ProductCustomization
+                            petName={petName}
+                            phone1={phone1}
+                            phone2={phone2}
+                            phone1Error={phone1Error}
+                            phone2Error={phone2Error}
+                            selectedFont={selectedFont}
+                            onPetNameChange={setPetName}
+                            onPhone1Change={(v) => { setPhone1(v); setPhone1Error(validatePhone(v)) }}
+                            onPhone2Change={(v) => { setPhone2(v); setPhone2Error(validatePhone(v)) }}
+                            onFontChange={setSelectedFont}
+                        />
 
-                            <div className="space-y-4">
-                                <div>
-                                    <label className="block text-xs tracking-wider text-text-secondary uppercase mb-2">Nom de l'animal *</label>
-                                    <input
-                                        type="text"
-                                        value={petName}
-                                        onChange={e => setPetName(e.target.value)}
-                                        placeholder="ex: Médor"
-                                        className="w-full p-2 border-b border-dark-grey/30 focus:border-dark-grey focus:outline-none bg-transparent text-dark-grey"
-                                    />
-                                </div>
+                        <ProductMedalPreview currentFont={currentFont} previewText={previewText} />
 
-                                <div>
-                                    <label className="block text-xs tracking-wider text-text-secondary uppercase mb-2">Téléphone 1 *</label>
-                                    <input 
-                                        type="tel"
-                                        value={phone1}
-                                        onChange={e => {
-                                            const v = e.target.value
-                                            setPhone1(v)
-                                            setPhone1Error(validatePhone(v))
-                                        }}
-                                        placeholder="06 01 02 03 04"
-                                        className={`w-full p-2 border-b focus:outline-none bg-transparent text-dark-grey ${
-                                            phone1Error ? 'border-red-400' : 'border-dark-grey/30 focus:border-dark-grey'
-                                        }`}
-                                    />
-                                    {phone1Error && <p className="text-xs text-red-400 mt-1">{phone1Error}</p>}
-                                </div>
+                        <ProductActions
+                            isFormValid={isFormValid}
+                            isOutOfStock={isOutOfStock}
+                            added={added}
+                            onAddToCart={handleAddToCart}
+                        />
 
-                                <div>
-                                    <label className="block text-xs tracking-wider text-text-secondary uppercase mb-2">Téléphone 2 <span className="text-text-secondary/70">(optionnel)</span></label>
-                                    <input
-                                        type="tel"
-                                        value={phone2}
-                                        onChange={e => {
-                                            const v = e.target.value
-                                            setPhone2(v)
-                                            setPhone2Error(validatePhone(v))
-                                        }}
-                                        placeholder="06 05 06 07 08"
-                                        className={`w-full p-2 border-b focus:outline-none bg-transparent text-dark-grey ${
-                                            phone2Error ? 'border-red-400' : 'border-dark-grey/30 focus:border-dark-grey'
-                                        }`}
-                                    />
-                                    {phone2Error && <p className="text-xs text-red-400 mt-1">{phone2Error}</p>}
-                                </div>
-
-                                <div>
-                                    <p className="text-xs tracking-wider text-text-secondary uppercase mb-3">Police d'écriture</p>
-                                    <div className="flex gap-2">
-                                        {FONTS.map((font) => (
-                                            <button
-                                                key={font.value}
-                                                type="button"
-                                                onClick={() => setSelectedFont(font.value)}
-                                                className={`px-4 py-2 text-sm border transition-all ${
-                                                    selectedFont === font.value
-                                                        ? 'border-dark-grey bg-dark-grey text-white'
-                                                        : 'border-dark-grey/30 text-dark-grey hover:border-dark-grey'
-                                                }`}
-                                                style={{ fontFamily: font.family }}
-                                            >
-                                                {font.label}
-                                            </button>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                                                <div className="flex items-center justify-center gap-6">
-                            <div className="relative flex items-center justify-center w-40 h-40 shrink-0">
-                                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-gray-300 via-gray-100 to-gray-400 border-[5px] border-gray-400/60" />
-                                <div className="absolute inset-2.5 rounded-full bg-gradient-to-b from-gray-100/80 to-gray-300/40" />
-                                <div className="absolute top-2.5 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full border-[2.5px] border-gray-400/70 bg-gray-200/50" />
-                                <div className="relative text-center px-4" style={{ fontFamily: currentFont.family }}>
-                                    {previewText.split('\n').map((line, i) => (
-                                        <p key={i} className={`text-gray-700 ${i === 0 ? 'text-base font-bold' : 'text-xs'}`}>
-                                            {line}
-                                        </p>
-                                    ))}
-                                </div>
-                            </div>
-                            <div className="relative flex items-center justify-center w-40 h-40 shrink-0">
-                                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-gray-300 via-gray-100 to-gray-400 border-[5px] border-gray-400/60" />
-                                <div className="absolute inset-2.5 rounded-full bg-gradient-to-b from-gray-100/80 to-gray-300/40" />
-                                <div className="absolute top-2.5 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full border-[2.5px] border-gray-400/70 bg-gray-200/50" />
-                                <img
-                                    src="https://izugqskkkniyybedqoem.supabase.co/storage/v1/object/public/qr-code/qr-ZCRBZ.png"
-                                    alt="QR code de la médaille"
-                                    className="relative w-28 h-28 mix-blend-multiply"
-                                />
-                            </div>
-                        </div>
-
-                        <div className="flex flex-col gap-3 pt-2">
-                            <button
-                                onClick={handleAddToCart}
-                                disabled={!isFormValid || isOutOfStock}
-                                type="button"
-                                className={`w-full inline-flex items-center justify-center gap-2 px-8 py-4 text-sm font-semibold tracking-widest uppercase transition-all ${
-                                    isOutOfStock
-                                        ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                                        : isFormValid
-                                            ? 'bg-dark-grey text-white hover:bg-black'
-                                            : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                                }`}
-                            >
-                                {added ? '✓ Ajouté au panier' : 'Ajouter au panier'}
-                            </button>
-                            {isOutOfStock && (
-                                <p className="text-xs text-red-400 font-medium">Ce produit est actuellement en rupture de stock</p>
-                            )}
-                            {!isOutOfStock && !isFormValid && (
-                                <p className="text-xs text-text-secondary">Remplis le nom et le téléphone 1 pour ajouter au panier</p>
-                            )}
-                        </div>
-
-                        <div className="pt-2">
-                            {product.description && accordion('description', 'Description', (
-                                <p>{product.description}</p>
-                            ))}
-                            {accordion('caracteristiques', 'Caractéristiques', (
-                                <ul className="space-y-2">
-                                    <li className="flex justify-between"><span>Marque</span><span className="font-medium text-dark-grey">Parfs</span></li>
-                                    <li className="flex justify-between"><span>Collection</span><span className="font-medium text-dark-grey">2022</span></li>
-                                    <li className="flex justify-between"><span>Référence</span><span className="font-medium text-dark-grey">G480745</span></li>
-                                    <li className="flex justify-between"><span>Matériau</span><span className="font-medium text-dark-grey">Acier inoxydable</span></li>
-                                    <li className="flex justify-between"><span>Diamètre</span><span className="font-medium text-dark-grey">30 mm</span></li>
-                                </ul>
-                            ))}
-                            {accordion('paiement', 'Payment & delivery', (
-                                <div className="space-y-2">
-                                    <p>Paiement sécurisé par carte bancaire (Stripe).</p>
-                                    <p>Livraison offerte en France métropolitaine sous 5-7 jours ouvrés.</p>
-                                </div>
-                            ))}
-                        </div>
+                        <ProductAccordion items={accordionItems} />
                     </div>
                 </div>
             </div>
@@ -433,8 +210,6 @@ export const ProductPage = () => {
                     />
                 )}
             </section>
-
-
         </div>
     )
 }

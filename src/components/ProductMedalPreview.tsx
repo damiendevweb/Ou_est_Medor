@@ -32,8 +32,8 @@ export const ProductMedalPreview = ({ currentFont, previewText }: Props) => {
 
 const MedalBase = () => (
     <>
-        <div className="absolute inset-0 rounded-full bg-gradient-to-br from-gray-300 via-gray-100 to-gray-400 border-[5px] border-gray-400/60" />
-        <div className="absolute inset-2.5 rounded-full bg-gradient-to-b from-gray-100/80 to-gray-300/40" />
+        <div className="absolute inset-0 rounded-full bg-linear-to-br from-gray-300 via-gray-100 to-gray-400 border-[5px] border-gray-400/60" />
+        <div className="absolute inset-2.5 rounded-full bg-linear-to-b from-gray-100/80 to-gray-300/40" />
     </>
 )
 

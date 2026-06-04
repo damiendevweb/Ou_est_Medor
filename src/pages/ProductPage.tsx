@@ -160,10 +160,10 @@ export const ProductPage = () => {
                         Au cœur de ce médaillon, un QR code unique, prêt à transmettre ton identité à la personne qui le scanne.
                     </p>
                 </div>
-                <div className="relative w-full max-w-4xl mx-auto aspect-[16/9] overflow-hidden bg-orange-100 flex items-center justify-center">
+                <div className="relative w-full max-w-4xl mx-auto aspect-video overflow-hidden bg-orange-100 flex items-center justify-center">
                     <div className="relative flex items-center justify-center w-72 h-72">
-                        <div className="absolute inset-0 rounded-full bg-gradient-to-br from-orange-200 via-yellow-100 to-orange-300 border-[6px] border-orange-300/60" />
-                        <div className="absolute inset-3 rounded-full bg-gradient-to-b from-orange-100/80 to-orange-200/40" />
+                        <div className="absolute inset-0 rounded-full bg-linear-to-br from-orange-200 via-yellow-100 to-orange-300 border-[6px] border-orange-300/60" />
+                        <div className="absolute inset-3 rounded-full bg-linear-to-b from-orange-100/80 to-orange-200/40" />
                         <div className="absolute top-3 left-1/2 -translate-x-1/2 w-5 h-5 rounded-full border-[3px] border-orange-300/70 bg-orange-100/50" />
                         <img
                             src="https://izugqskkkniyybedqoem.supabase.co/storage/v1/object/public/qr-code/qr-ZCRBZ.png"
@@ -206,7 +206,7 @@ export const ProductPage = () => {
                     <img
                         src={sortedImages[0].image_url}
                         alt={product.name}
-                        className="w-full max-w-4xl mx-auto aspect-[16/9] object-cover"
+                        className="w-full max-w-4xl mx-auto aspect-video object-cover"
                     />
                 )}
             </section>

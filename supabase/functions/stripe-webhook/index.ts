@@ -4,6 +4,9 @@ import Stripe from 'npm:stripe@17'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore -- Supabase Edge Functions resolve npm: imports at runtime
 import { createClient } from 'npm:@supabase/supabase-js@2'
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore -- module résolu au runtime par l'Edge Runtime
+import { sendMail } from '../_shared/smtp.ts'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -221,6 +224,50 @@ Deno.serve(async (req) => {
         }
       }
 
+      // Envoie l'email de confirmation (best-effort, après la réponse au webhook)
+      const customerEmail = orderPayload.customer_email
+      if (customerEmail && lineItems.length > 0) {
+        const confirmPromise = sendOrderConfirmation({
+          email: customerEmail,
+          orderId,
+          currency: orderPayload.currency,
+          lines: lineItems.map((li) => {
+            const product = li.price?.product as unknown
+            const productName =
+              product && typeof product === 'object' && 'name' in product
+                ? String((product as { name?: string }).name ?? 'Produit')
+                : 'Produit'
+            const metadata =
+              product && typeof product === 'object' && 'metadata' in product
+                ? ((product as { metadata?: Record<string, string> }).metadata ?? {})
+                : {}
+            const customization =
+              metadata.pet_name != null || metadata.phone1 != null
+                ? ` — ${metadata.pet_name ?? ''}${metadata.phone1 ? ` · ${metadata.phone1}` : ''}${metadata.phone2 ? ` · ${metadata.phone2}` : ''}`
+                : ''
+            return {
+              name: `${productName}${customization}`,
+              quantity: li.quantity ?? 1,
+              unitPriceCents: Math.round((li.amount_total ?? 0) / (li.quantity ?? 1)),
+            }
+          }),
+          subtotalCents: orderPayload.subtotal_cents,
+          discountCents: orderPayload.discount_cents,
+          shippingCents: orderPayload.shipping_cents,
+          totalCents: orderPayload.total_cents,
+          address: orderPayload.shipping_address as
+            | { line1?: string | null; city?: string | null; postal_code?: string | null; country?: string | null }
+            | null,
+        })
+        const waitUntil = (globalThis as { EdgeRuntime?: { waitUntil: (p: Promise<unknown>) => void } })
+          .EdgeRuntime?.waitUntil
+        if (waitUntil) {
+          waitUntil(confirmPromise)
+        } else {
+          void confirmPromise
+        }
+      }
+
       return json(200, {
         received: true,
         orderId,
@@ -259,4 +306,65 @@ function shippingAddressLine1(address: Record<string, unknown>): string | null {
 function addressField(address: Record<string, unknown>, key: string): string | null {
   const value = address[key] as string | null | undefined
   return value ?? null
+}
+
+type ConfirmationEmailArgs = {
+  email: string
+  orderId: string
+  currency: string
+  lines: { name: string; quantity: number; unitPriceCents: number }[]
+  subtotalCents: number
+  discountCents: number
+  shippingCents: number
+  totalCents: number
+  address: { line1?: string | null; city?: string | null; postal_code?: string | null; country?: string | null } | null
+}
+
+const formatPrice = (cents: number, currency: string) =>
+  new Intl.NumberFormat('fr-FR', {
+    style: 'currency',
+    currency: currency.toUpperCase(),
+  }).format(cents / 100)
+
+const sendOrderConfirmation = async (args: ConfirmationEmailArgs) => {
+  const { email, orderId, currency, lines, subtotalCents, discountCents, shippingCents, totalCents, address } = args
+
+  const linesText = lines
+    .map((l) => `• ${l.name}\n  ${l.quantity} × ${formatPrice(l.unitPriceCents, currency)} = ${formatPrice(l.unitPriceCents * l.quantity, currency)}`)
+    .join('\n')
+
+  const addressText = address?.line1
+    ? `${address.line1}${address.postal_code ? `, ${address.postal_code}` : ''}${address.city ? ` ${address.city}` : ''}${address.country ? ` (${address.country})` : ''}`
+    : '(adresse non renseignée)'
+
+  const text = [
+    `Bonjour,`,
+    ``,
+    `Merci pour votre commande sur Où est Médor ?`,
+    ``,
+    `Référence de commande : ${orderId.slice(0, 8).toUpperCase()}`,
+    ``,
+    `====================`,
+    linesText,
+    ``,
+    `Sous-total : ${formatPrice(subtotalCents, currency)}`,
+    ...(discountCents > 0 ? [`Remise : −${formatPrice(discountCents, currency)}`] : []),
+    `Livraison : ${shippingCents > 0 ? formatPrice(shippingCents, currency) : 'Offerte'}`,
+    `TOTAL : ${formatPrice(totalCents, currency)}`,
+    `====================`,
+    ``,
+    `Livraison prévue à :`,
+    addressText,
+    ``,
+    `Votre médaillle sera expédiée sous 48h ouvrées.`,
+    ``,
+    `À bientôt,`,
+    `L'équipe Où est Médor ?`,
+  ].join('\n')
+
+  await sendMail({
+    to: email,
+    subject: `Confirmation de commande ${orderId.slice(0, 8).toUpperCase()} — Où est Médor ?`,
+    text,
+  })
 }

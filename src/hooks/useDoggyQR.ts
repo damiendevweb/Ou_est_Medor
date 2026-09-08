@@ -22,7 +22,7 @@ export const useDoggyQR = () => {
     try {
       const { error: insertError } = await supabase.from('animal').insert({ id: newId })
       if (insertError) throw insertError
-      const dataUrl = await QRCode.toDataURL(`https://doggytracker.onrender.com/${newId}`)
+      const dataUrl = await QRCode.toDataURL(`https://ouestmedor.fr/${newId}`)
       const base64Data = dataUrl.split(',')[1]
       const fileBytes = Uint8Array.from(atob(base64Data), (char) => char.charCodeAt(0))
       const filePath = `qr-${newId}.png`

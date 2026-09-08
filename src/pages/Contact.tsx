@@ -1,15 +1,78 @@
-export const Contact = () => {
-    return (
-        <div className="min-h-screen bg-bg">
-            <div className="max-w-7xl mx-auto px-5 py-6">
-                <nav className="flex items-center gap-2 text-xs text-text-muted">
-                    <a href="/" className="hover:text-text-secondary transition-colors">Accueil</a>
-                    <span>/</span>
-                    <span className="text-text-secondary">Contact</span>
-                </nav>
-            </div>
+import { useState } from 'react'
+import { supabase } from '../lib/supabase'
 
-            <div className="max-w-4xl mx-auto px-5 pb-16">
+const SUJETS = [
+    { value: 'produit', label: 'Question sur un produit' },
+    { value: 'commande', label: 'Suivi de commande' },
+    { value: 'retrouvailles', label: 'Témoignage de retrouvailles' },
+    { value: 'partenariat', label: 'Partenariat' },
+    { value: 'autre', label: 'Autre' },
+]
+
+type FormState = {
+    prenom: string
+    nom: string
+    email: string
+    telephone: string
+    sujet: string
+    message: string
+    consent: boolean
+    website: string
+}
+
+const emptyForm: FormState = {
+    prenom: '',
+    nom: '',
+    email: '',
+    telephone: '',
+    sujet: '',
+    message: '',
+    consent: false,
+    website: '',
+}
+
+export const Contact = () => {
+    const [form, setForm] = useState<FormState>(emptyForm)
+    const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+    const [error, setError] = useState<string | null>(null)
+
+    const update = <K extends keyof FormState>(key: K, value: FormState[K]) => {
+        setForm((prev) => ({ ...prev, [key]: value }))
+    }
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault()
+        if (status === 'loading') return
+
+        setStatus('loading')
+        setError(null)
+
+        try {
+            const { error } = await supabase.functions.invoke('contact-form', {
+                body: form,
+            })
+
+            if (error) {
+                const detail = (error as { context?: { data?: { error?: string } } }).context?.data?.error
+                setError(detail ?? "Impossible d'envoyer le message. Réessaie plus tard.")
+                setStatus('error')
+                return
+            }
+
+            setForm(emptyForm)
+            setStatus('success')
+        } catch {
+            setError("Impossible d'envoyer le message. Réessaie plus tard.")
+            setStatus('error')
+        }
+    }
+
+    const inputClass =
+        "w-full px-3 py-2 rounded border border-border bg-bg-surface text-text-primary text-sm focus:border-accent focus:ring-0 placeholder:text-text-muted"
+
+    return (
+        <div>
+            <div className="max-w-4xl mx-auto px-5 pt-4 pb-9 text-center">
                 <h1 className="font-unbounded text-3xl md:text-4xl font-bold text-text-primary mb-3">
                     Contact
                 </h1>
@@ -19,23 +82,6 @@ export const Contact = () => {
             </div>
 
             <div className="max-w-5xl mx-auto px-5 pb-20">
-                {/* Contact cards */}
-                <div className="grid md:grid-cols-3 gap-px bg-border rounded overflow-hidden mb-14">
-                    {[
-                        { icon: '📧', title: 'Email', line1: 'contact@ouestmedor.fr', line2: 'Réponse sous 24h' },
-                        { icon: '📞', title: 'Téléphone', line1: '01 23 45 67 89', line2: 'Lun-Ven 9h-18h' },
-                        { icon: '📍', title: 'Adresse', line1: '12 Rue des Toutous', line2: '75000 Paris' },
-                    ].map((card) => (
-                        <div key={card.title} className="bg-bg-elevated p-6 text-center hover:bg-bg-hover transition-colors">
-                            <div className="w-10 h-10 bg-accent-dim rounded flex items-center justify-center text-lg mx-auto mb-3">
-                                {card.icon}
-                            </div>
-                            <h3 className="text-sm font-semibold text-text-primary mb-1">{card.title}</h3>
-                            <p className="text-xs text-text-secondary">{card.line1}</p>
-                            <p className="text-xs text-text-muted">{card.line2}</p>
-                        </div>
-                    ))}
-                </div>
 
                 {/* Form */}
                 <div className="max-w-2xl mx-auto">
@@ -43,7 +89,18 @@ export const Contact = () => {
                         <h2 className="text-lg font-bold text-text-primary mb-1">Envoie-nous un message</h2>
                         <p className="text-xs text-text-muted mb-8">Tous les champs marqués d'un * sont obligatoires.</p>
 
-                        <form className="space-y-5">
+                        <form onSubmit={handleSubmit} className="space-y-5">
+                            {/* Honeypot anti-spam (invisible) */}
+                            <input
+                                type="text"
+                                name="website"
+                                value={form.website}
+                                onChange={(e) => update('website', e.target.value)}
+                                className="hidden"
+                                tabIndex={-1}
+                                autoComplete="off"
+                            />
+
                             <div className="grid sm:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-[10px] font-semibold text-text-muted uppercase tracking-wider mb-1.5">
@@ -52,7 +109,10 @@ export const Contact = () => {
                                     <input
                                         type="text"
                                         placeholder="Sophie"
-                                        className="w-full px-3 py-2 rounded border border-border bg-bg-surface text-text-primary text-sm focus:border-accent focus:ring-0 placeholder:text-text-muted"
+                                        value={form.prenom}
+                                        onChange={(e) => update('prenom', e.target.value)}
+                                        className={inputClass}
+                                        required
                                     />
                                 </div>
                                 <div>
@@ -62,7 +122,10 @@ export const Contact = () => {
                                     <input
                                         type="text"
                                         placeholder="Martin"
-                                        className="w-full px-3 py-2 rounded border border-border bg-bg-surface text-text-primary text-sm focus:border-accent focus:ring-0 placeholder:text-text-muted"
+                                        value={form.nom}
+                                        onChange={(e) => update('nom', e.target.value)}
+                                        className={inputClass}
+                                        required
                                     />
                                 </div>
                             </div>
@@ -74,7 +137,10 @@ export const Contact = () => {
                                 <input
                                     type="email"
                                     placeholder="sophie@exemple.fr"
-                                    className="w-full px-3 py-2 rounded border border-border bg-bg-surface text-text-primary text-sm focus:border-accent focus:ring-0 placeholder:text-text-muted"
+                                    value={form.email}
+                                    onChange={(e) => update('email', e.target.value)}
+                                    className={inputClass}
+                                    required
                                 />
                             </div>
 
@@ -85,7 +151,9 @@ export const Contact = () => {
                                 <input
                                     type="tel"
                                     placeholder="06 01 02 03 04"
-                                    className="w-full px-3 py-2 rounded border border-border bg-bg-surface text-text-primary text-sm focus:border-accent focus:ring-0 placeholder:text-text-muted"
+                                    value={form.telephone}
+                                    onChange={(e) => update('telephone', e.target.value)}
+                                    className={inputClass}
                                 />
                             </div>
 
@@ -93,13 +161,16 @@ export const Contact = () => {
                                 <label className="block text-[10px] font-semibold text-text-muted uppercase tracking-wider mb-1.5">
                                     Sujet *
                                 </label>
-                                <select className="w-full px-3 py-2 rounded border border-border bg-bg-surface text-text-primary text-sm focus:border-accent focus:ring-0">
+                                <select
+                                    value={form.sujet}
+                                    onChange={(e) => update('sujet', e.target.value)}
+                                    className={inputClass}
+                                    required
+                                >
                                     <option value="">Sélectionne un sujet</option>
-                                    <option value="produit">Question sur un produit</option>
-                                    <option value="commande">Suivi de commande</option>
-                                    <option value="retrouvailles">Témoignage de retrouvailles</option>
-                                    <option value="partenariat">Partenariat</option>
-                                    <option value="autre">Autre</option>
+                                    {SUJETS.map((s) => (
+                                        <option key={s.value} value={s.value}>{s.label}</option>
+                                    ))}
                                 </select>
                             </div>
 
@@ -110,15 +181,21 @@ export const Contact = () => {
                                 <textarea
                                     rows={5}
                                     placeholder="Dis-nous tout..."
-                                    className="w-full px-3 py-2 rounded border border-border bg-bg-surface text-text-primary text-sm focus:border-accent focus:ring-0 placeholder:text-text-muted resize-y"
+                                    value={form.message}
+                                    onChange={(e) => update('message', e.target.value)}
+                                    className={`${inputClass} resize-y`}
+                                    required
                                 />
                             </div>
 
-                            <div className="flex items-start gap-3">
+                            <div className="flex items-center gap-3">
                                 <input
                                     id="consent"
                                     type="checkbox"
-                                    className="mt-1 w-4 h-4 rounded border-border bg-bg-surface text-accent focus:ring-accent"
+                                    checked={form.consent}
+                                    onChange={(e) => update('consent', e.target.checked)}
+                                    className="w-4 h-4 rounded border-border bg-bg-surface text-accent focus:ring-accent"
+                                    required
                                 />
                                 <label htmlFor="consent" className="text-xs text-text-muted">
                                     J'accepte que mes données soient traitées pour répondre à ma demande.{' '}
@@ -126,11 +203,21 @@ export const Contact = () => {
                                 </label>
                             </div>
 
+                            {status === 'success' && (
+                                <p className="p-3 rounded bg-success/10 text-success text-sm">
+                                    Message envoyé ! On te répond très vite.
+                                </p>
+                            )}
+                            {status === 'error' && error && (
+                                <p className="p-3 rounded bg-error/10 text-error text-sm">{error}</p>
+                            )}
+
                             <button
                                 type="submit"
-                                className="w-full bg-accent hover:bg-accent-hover text-bg font-semibold text-sm px-8 py-3 rounded transition-all"
+                                disabled={status === 'loading'}
+                                className="w-full bg-accent hover:bg-accent-hover text-bg font-semibold text-sm px-8 py-3 rounded transition-all disabled:opacity-60"
                             >
-                                Envoyer mon message
+                                {status === 'loading' ? 'Envoi en cours...' : 'Envoyer mon message'}
                             </button>
                         </form>
                     </div>

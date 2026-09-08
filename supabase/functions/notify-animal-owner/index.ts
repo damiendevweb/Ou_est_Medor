@@ -127,7 +127,7 @@ Deno.serve(async (req) => {
             }
 
             webpush.setVapidDetails(
-                  'mailto:contact@doggytracker.app',
+                  'mailto:contact@ouestmedor.fr',
                   vapidPublicKey,
                   vapidPrivateKey
             )

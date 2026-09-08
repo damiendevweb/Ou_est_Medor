@@ -39,7 +39,7 @@ export const AuthPage = () => {
         }
 
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
-            redirectTo: 'https://doggytracker.onrender.com/reset-password',
+            redirectTo: 'https://ouestmedor.fr/reset-password',
         });
 
         if (error) {

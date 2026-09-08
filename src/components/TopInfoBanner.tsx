@@ -5,7 +5,7 @@ export const TopInfoBanner = () => {
     const repeatCount = 20
 
     return (
-        <div className="w-full overflow-hidden bg-[#6eff8e] py-2">
+        <div className="w-full overflow-hidden bg-[#6eff8e] py-2 z-60">
             <Link
                 to="/categorie/medaille-gravee"
                 className="flex whitespace-nowrap animate-marquee"

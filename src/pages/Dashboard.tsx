@@ -59,13 +59,12 @@ export const Dashboard = () => {
     const [error, setError] = useState<string | null>(null)
     const [editing, setEditing] = useState(false)
     const [formData, setFormData] = useState<Partial<Animal>>({})
-    const { display: ageDisplay } = useAge(formData.birth_date)
+    const animal = animals.find((a) => a.id === selectedId) ?? animals[0] ?? null
+    const { display: ageDisplay } = useAge(editing ? formData.birth_date : animal?.birth_date)
     const [scans, setScans] = useState<ScanEvent[]>([])
     const [scansLoading, setScansLoading] = useState(true)
     const [historyOpen, setHistoryOpen] = useState(false)
     const [openMonths, setOpenMonths] = useState<Set<string>>(new Set())
-
-    const animal = animals.find((a) => a.id === selectedId) ?? animals[0] ?? null
 
     const scansByMonth = useMemo(() => {
         const groups = new Map<string, { calendarDate: string; items: ScanEvent[] }>()

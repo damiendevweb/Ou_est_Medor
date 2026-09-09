@@ -86,7 +86,7 @@ export const Contact = () => {
                 {/* Form */}
                 <div className="max-w-2xl mx-auto">
                     <div className="bg-bg-elevated border border-border rounded p-8 md:p-10">
-                        <h2 className="text-lg font-bold text-text-primary mb-1">Envoie-nous un message</h2>
+                        <h2 className="text-lg font-bold text-text-primary mb-1">Envoyez-nous un message</h2>
                         <p className="text-xs text-text-muted mb-8">Tous les champs marqués d'un * sont obligatoires.</p>
 
                         <form onSubmit={handleSubmit} className="space-y-5">
@@ -167,7 +167,7 @@ export const Contact = () => {
                                     className={inputClass}
                                     required
                                 >
-                                    <option value="">Sélectionne un sujet</option>
+                                    <option value="">Sélectionnez un sujet</option>
                                     {SUJETS.map((s) => (
                                         <option key={s.value} value={s.value}>{s.label}</option>
                                     ))}
@@ -180,7 +180,7 @@ export const Contact = () => {
                                 </label>
                                 <textarea
                                     rows={5}
-                                    placeholder="Dis-nous tout..."
+                                    placeholder="Dites-nous tout..."
                                     value={form.message}
                                     onChange={(e) => update('message', e.target.value)}
                                     className={`${inputClass} resize-y`}
@@ -205,7 +205,7 @@ export const Contact = () => {
 
                             {status === 'success' && (
                                 <p className="p-3 rounded bg-success/10 text-success text-sm">
-                                    Message envoyé ! On te répond très vite.
+                                    Message envoyé ! On vous répond très vite.
                                 </p>
                             )}
                             {status === 'error' && error && (

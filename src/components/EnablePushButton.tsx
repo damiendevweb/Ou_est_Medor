@@ -64,7 +64,7 @@ export default function EnablePushButton() {
             const { data: userData } = await supabase.auth.getUser()
             const user = userData.user
             if (!user) {
-                showError('Connecte-toi pour activer les notifications.')
+                showError('Connectez-vous pour activer les notifications.')
                 return
             }
 
@@ -82,7 +82,7 @@ export default function EnablePushButton() {
                 permission = await Notification.requestPermission()
             }
             if (permission !== 'granted') {
-                showError('Autorise les notifications dans ton navigateur.')
+                showError('Autorisez les notifications dans votre navigateur.')
                 return
             }
 

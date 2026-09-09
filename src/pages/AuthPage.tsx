@@ -34,7 +34,7 @@ export const AuthPage = () => {
         setInfo(null);
 
         if (!email) {
-            setError("Entre ton email pour recevoir le lien de réinitialisation");
+            setError("Entrez votre email pour recevoir le lien de réinitialisation");
             return;
         }
 
@@ -45,7 +45,7 @@ export const AuthPage = () => {
         if (error) {
             setError(error.message);
         } else {
-            setInfo("Email de réinitialisation envoyé. Vérifie ta boîte mail.");
+            setInfo("Email de réinitialisation envoyé. Vérifiez votre boîte mail.");
         }
     };
 
@@ -63,7 +63,7 @@ export const AuthPage = () => {
                         {isSignUp ? 'Inscription' : 'Connexion'}
                     </h1>
                     <p className="text-xs text-text-secondary mt-2">
-                        {isSignUp ? 'Crée ton compte pour gérer la fiche de ton animal' : 'Connecte-toi à ton espace'}
+                        {isSignUp ? 'Créez votre compte pour gérer la fiche de votre animal' : 'Connectez-vous à votre espace'}
                     </p>
                 </div>
 

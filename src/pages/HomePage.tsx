@@ -4,7 +4,7 @@ import { HeroBanner } from '../components/HeroBanner'
 import { BlogSection } from '../components/BlogSection'
 
 const steps = [
-    { step: '01', title: 'Commande', desc: 'Choisis la taille et la couleur. Livrée en 48h.' },
+    { step: '01', title: 'Commande', desc: 'Choisissez la taille et la couleur. Livrée en 48h.' },
     { step: '02', title: 'Profil', desc: 'Nom, santé, vaccins, coordonnées. Modifiable à tout moment.' },
     { step: '03', title: 'Scan', desc: 'N\'importe qui scanne avec son téléphone. Zéro app.' },
     { step: '04', title: 'Alerte', desc: 'Notification push + géolocalisation. Retrouvailles rapides.' },

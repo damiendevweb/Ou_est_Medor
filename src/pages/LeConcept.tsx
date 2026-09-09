@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 
 const steps = [
     { num: '01', title: 'Réception', desc: 'Commande en ligne, reçue en 48h.' },
-    { num: '02', title: 'Configuration', desc: 'Crée le profil depuis ton espace sécurisé.' },
+    { num: '02', title: 'Configuration', desc: 'Créez le profil depuis votre espace sécurisé.' },
     { num: '03', title: 'Scan', desc: 'N\'importe qui scanne. Aucune app requise.' },
     { num: '04', title: 'Notification', desc: 'Alerte push avec localisation GPS.' },
 ]

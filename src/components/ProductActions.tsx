@@ -27,7 +27,7 @@ export const ProductActions = ({ isFormValid, isOutOfStock, added, onAddToCart }
                 <p className="text-xs text-error font-medium text-center">Rupture de stock</p>
             )}
             {!isOutOfStock && !isFormValid && (
-                <p className="text-xs text-text-muted text-center">Remplis le nom et le téléphone 1</p>
+                <p className="text-xs text-text-muted text-center">Remplissez le nom et le téléphone 1</p>
             )}
         </div>
     )

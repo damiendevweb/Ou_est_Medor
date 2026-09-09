@@ -199,7 +199,7 @@ export const Dashboard = () => {
         return (
             <div className="p-6">
                 <div className="text-center mt-20 p-8 bg-bg-elevated rounded border border-border text-sm text-text-muted">
-                    Aucun animal lié à ton compte.
+                    Aucun animal lié à votre compte.
                 </div>
             </div>
         )

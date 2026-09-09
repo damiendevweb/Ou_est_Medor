@@ -229,7 +229,7 @@ export const AnimalPage = () => {
                     <h2 className="font-unbounded text-2xl font-bold text-text-primary mb-2">{normalizedAnimalId}</h2>
                     <p className="text-sm text-text-secondary mb-6">{error || 'Animal introuvable'}</p>
                     <p className="text-sm text-text-muted">
-                        Vérifie l'ID ou{' '}
+                        Vérifiez l'ID ou{' '}
                         <Link to="/" className="text-accent hover:text-accent-hover font-medium">retourne à l'accueil</Link>
                     </p>
                 </div>
@@ -252,7 +252,7 @@ export const AnimalPage = () => {
                     </p>
                     <div className="bg-bg-surface rounded p-3 mb-6 border border-border">
                         <p className="text-xs font-medium text-text-secondary">
-                            Inscris-toi pour remplir sa fiche complète
+                            Inscrivez-vous pour remplir sa fiche complète
                         </p>
                     </div>
                     <a

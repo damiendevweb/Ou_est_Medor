@@ -52,7 +52,7 @@ export const ShoppingCartDrawer = () => {
         </svg>
       </button>
 
-      <Dialog open={open} onClose={setOpen} className="relative z-50">
+      <Dialog open={open} onClose={setOpen} className="relative z-60">
         <DialogBackdrop
           transition
           className="fixed inset-0 bg-black/60 transition-opacity duration-500 ease-in-out data-closed:opacity-0"

@@ -2,6 +2,7 @@ import { supabase } from '../lib/supabase';
 import { useSearchParams } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth'
 import { useEffect, useState } from 'react'
+import { Input } from '../components/Input'
 
 export const AuthPage = () => {
     const { user, signUp, signIn } = useAuth()
@@ -72,24 +73,23 @@ export const AuthPage = () => {
                         <>
                             <div>
                                 <label className="block text-[10px] font-semibold text-text-muted uppercase tracking-wider mb-1.5">Prénom</label>
-                                <input
+                                <Input
                                     type="text"
                                     placeholder="Prénom"
                                     value={prenom}
                                     onChange={e => setPrenom(e.target.value)}
-                                    className="w-full px-3 py-2 rounded border border-border bg-bg-surface text-text-primary text-sm focus:border-accent focus:ring-0 placeholder:text-text-muted"
                                     required
                                 />
                             </div>
                             <div>
                                 <label className="block text-[10px] font-semibold text-text-muted uppercase tracking-wider mb-1.5">ID de l'animal</label>
-                                <input
+                                <Input
                                     type="text"
                                     placeholder="ex: B7M2X"
                                     value={animalId}
                                     onChange={e => setAnimalId(e.target.value.toUpperCase())}
                                     maxLength={5}
-                                    className="w-full px-3 py-2 rounded border border-border bg-bg-surface text-text-primary text-sm focus:border-accent focus:ring-0 placeholder:text-text-muted uppercase"
+                                    className="uppercase"
                                     required
                                 />
                             </div>
@@ -97,12 +97,11 @@ export const AuthPage = () => {
                     )}
                     <div>
                         <label className="block text-[10px] font-semibold text-text-muted uppercase tracking-wider mb-1.5">Adresse Email</label>
-                        <input
+                        <Input
                             type="email"
                             placeholder="Email"
                             value={email}
                             onChange={e => setEmail(e.target.value)}
-                            className="w-full px-3 py-2 rounded border border-border bg-bg-surface text-text-primary text-sm focus:border-accent focus:ring-0 placeholder:text-text-muted"
                             required
                         />
                     </div>
@@ -117,12 +116,11 @@ export const AuthPage = () => {
                                 Mot de passe oublié ?
                             </button>
                         </div>
-                        <input
+                        <Input
                             type="password"
                             placeholder="6+ caractères"
                             value={password}
                             onChange={e => setPassword(e.target.value)}
-                            className="w-full px-3 py-2 rounded border border-border bg-bg-surface text-text-primary text-sm focus:border-accent focus:ring-0 placeholder:text-text-muted"
                             minLength={6}
                             required
                         />

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { supabase } from '../lib/supabase'
+import { Input, Textarea } from '../components/Input'
 
 const SUJETS = [
     { value: 'produit', label: 'Question sur un produit' },
@@ -67,9 +68,6 @@ export const Contact = () => {
         }
     }
 
-    const inputClass =
-        "w-full px-3 py-2 rounded border border-border bg-bg-surface text-text-primary text-sm focus:border-accent focus:ring-0 placeholder:text-text-muted"
-
     return (
         <div>
             <div className="max-w-4xl mx-auto px-5 pt-4 pb-9 text-center">
@@ -106,12 +104,11 @@ export const Contact = () => {
                                     <label className="block text-[10px] font-semibold text-text-muted uppercase tracking-wider mb-1.5">
                                         Prénom *
                                     </label>
-                                    <input
+                                    <Input
                                         type="text"
                                         placeholder="Sophie"
                                         value={form.prenom}
                                         onChange={(e) => update('prenom', e.target.value)}
-                                        className={inputClass}
                                         required
                                     />
                                 </div>
@@ -119,12 +116,11 @@ export const Contact = () => {
                                     <label className="block text-[10px] font-semibold text-text-muted uppercase tracking-wider mb-1.5">
                                         Nom *
                                     </label>
-                                    <input
+                                    <Input
                                         type="text"
                                         placeholder="Martin"
                                         value={form.nom}
                                         onChange={(e) => update('nom', e.target.value)}
-                                        className={inputClass}
                                         required
                                     />
                                 </div>
@@ -134,12 +130,11 @@ export const Contact = () => {
                                 <label className="block text-[10px] font-semibold text-text-muted uppercase tracking-wider mb-1.5">
                                     Email *
                                 </label>
-                                <input
+                                <Input
                                     type="email"
                                     placeholder="sophie@exemple.fr"
                                     value={form.email}
                                     onChange={(e) => update('email', e.target.value)}
-                                    className={inputClass}
                                     required
                                 />
                             </div>
@@ -148,12 +143,11 @@ export const Contact = () => {
                                 <label className="block text-[10px] font-semibold text-text-muted uppercase tracking-wider mb-1.5">
                                     Téléphone <span className="text-text-muted">(optionnel)</span>
                                 </label>
-                                <input
+                                <Input
                                     type="tel"
                                     placeholder="06 01 02 03 04"
                                     value={form.telephone}
                                     onChange={(e) => update('telephone', e.target.value)}
-                                    className={inputClass}
                                 />
                             </div>
 
@@ -164,7 +158,7 @@ export const Contact = () => {
                                 <select
                                     value={form.sujet}
                                     onChange={(e) => update('sujet', e.target.value)}
-                                    className={inputClass}
+                                    className="w-full px-3 py-2 rounded border border-border bg-bg-surface text-text-primary text-sm focus:border-accent focus:ring-0"
                                     required
                                 >
                                     <option value="">Sélectionnez un sujet</option>
@@ -178,12 +172,12 @@ export const Contact = () => {
                                 <label className="block text-[10px] font-semibold text-text-muted uppercase tracking-wider mb-1.5">
                                     Message *
                                 </label>
-                                <textarea
+                                <Textarea
                                     rows={5}
                                     placeholder="Dites-nous tout..."
                                     value={form.message}
                                     onChange={(e) => update('message', e.target.value)}
-                                    className={`${inputClass} resize-y`}
+                                    className="resize-y"
                                     required
                                 />
                             </div>

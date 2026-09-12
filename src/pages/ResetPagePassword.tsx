@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { useNavigate } from 'react-router-dom';
+import { Input } from '../components/Input';
 
 export const ResetPasswordPage = () => {
   const [password, setPassword] = useState('');
@@ -49,23 +50,21 @@ export const ResetPasswordPage = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-[10px] font-semibold text-text-muted uppercase tracking-wider mb-1.5">Nouveau mot de passe</label>
-            <input
+            <Input
               type="password"
               placeholder="Nouveau mot de passe"
               value={password}
               onChange={e => setPassword(e.target.value)}
-              className="w-full px-3 py-2 rounded border border-border bg-bg-surface text-text-primary text-sm focus:border-accent focus:ring-0 placeholder:text-text-muted"
               required
             />
           </div>
           <div>
             <label className="block text-[10px] font-semibold text-text-muted uppercase tracking-wider mb-1.5">Confirmer le mot de passe</label>
-            <input
+            <Input
               type="password"
               placeholder="Confirmer le mot de passe"
               value={password2}
               onChange={e => setPassword2(e.target.value)}
-              className="w-full px-3 py-2 rounded border border-border bg-bg-surface text-text-primary text-sm focus:border-accent focus:ring-0 placeholder:text-text-muted"
               required
             />
           </div>

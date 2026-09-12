@@ -1,4 +1,5 @@
 import { FONTS } from '../lib/product.types'
+import { Input } from './Input'
 
 type Props = {
     petName: string
@@ -25,36 +26,31 @@ export const ProductCustomization = ({
             </div>
             <div className="space-y-4">
                 <Field label="Nom de l'animal *">
-                    <input
+                    <Input
                         type="text"
                         value={petName}
                         onChange={e => onPetNameChange(e.target.value)}
                         placeholder="ex: Médor"
-                        className="w-full px-3 py-2 rounded border border-border bg-bg-surface text-text-primary text-sm focus:border-accent focus:ring-0 placeholder:text-text-muted"
                     />
                 </Field>
 
                 <Field label="Téléphone 1 *" error={phone1Error}>
-                    <input
+                    <Input
                         type="tel"
                         value={phone1}
                         onChange={e => onPhone1Change(e.target.value)}
                         placeholder="06 01 02 03 04"
-                        className={`w-full px-3 py-2 rounded border focus:ring-0 bg-bg-surface text-text-primary text-sm ${
-                            phone1Error ? 'border-error' : 'border-border focus:border-accent'
-                        }`}
+                        className={phone1Error ? 'border-error' : ''}
                     />
                 </Field>
 
                 <Field label="Téléphone 2 (optionnel)" error={phone2Error}>
-                    <input
+                    <Input
                         type="tel"
                         value={phone2}
                         onChange={e => onPhone2Change(e.target.value)}
                         placeholder="06 05 06 07 08"
-                        className={`w-full px-3 py-2 rounded border focus:ring-0 bg-bg-surface text-text-primary text-sm ${
-                            phone2Error ? 'border-error' : 'border-border focus:border-accent'
-                        }`}
+                        className={phone2Error ? 'border-error' : ''}
                     />
                 </Field>
 

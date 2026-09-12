@@ -82,6 +82,7 @@ export const Footer = () => {
   useEffect(() => {
     let cancelled = false;
     const fetchContent = async () => {
+      if (!sanityClient) return;
       try {
         const data = await sanityClient.fetch<FooterContent | null>(
           FOOTER_QUERY,

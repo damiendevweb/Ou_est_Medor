@@ -10,7 +10,7 @@ export const BlogPostPage = () => {
     }
 
     return (
-        <div className="min-h-screen bg-bg">
+        <div className="min-h-screen">
             <div className="max-w-3xl mx-auto px-5 py-12">
                 <Link
                     to="/"
@@ -23,9 +23,6 @@ export const BlogPostPage = () => {
                 </Link>
 
                 <article className="bg-bg-elevated border border-border overflow-hidden">
-                    <div className="bg-bg-surface border-b border-border p-12 text-center">
-                        <span className="text-4xl">🐾</span>
-                    </div>
 
                     <div className="p-8 md:p-10">
                         <div className="flex items-center gap-3 mb-6">

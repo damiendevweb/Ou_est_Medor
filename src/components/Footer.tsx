@@ -25,7 +25,7 @@ const FALLBACK_COLUMNS: FooterColumn[] = [
   {
     title: "Produit",
     links: [
-      { label: "Médailles", href: "/categorie/medaille-gravee" },
+      { label: "Médailles", href: "#" },
       { label: "Accessoires", href: "#" },
       { label: "Concept", href: "/le-concept" },
       { label: "Blog", href: "#" },
@@ -114,7 +114,7 @@ export const Footer = () => {
             Rejoignez l'aventure Où est Médor !
           </p>
           <Link
-            to="/categorie/medaille-gravee"
+            to="/produit/medaille-qr"
             className="inline-flex items-center gap-2 bg-white hover:bg-accent-hover hover:text-white text-accent font-semibold text-sm px-6 py-2.5 rounded transition-all"
           >
             Commander

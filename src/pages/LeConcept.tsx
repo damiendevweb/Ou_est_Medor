@@ -135,7 +135,7 @@ export const LeConcept = () => {
                     </h2>
                     <p className="text-sm text-text-secondary mb-6">Rejoignez les 2500+ familles protégées.</p>
                     <Link
-                        to="/categorie/medaille-gravee"
+                        to="/produit/medaille-qr"
                         className="inline-flex items-center gap-2 bg-accent hover:bg-accent-hover text-bg font-semibold text-sm px-6 py-2.5 rounded transition-all"
                     >
                         Découvrir

@@ -102,7 +102,7 @@ export const OrdersPage = () => {
                                 Vous n'avez pas encore de commande.
                             </p>
                             <a
-                                href="/categorie/medaille-gravee"
+                                href="/produit/medaille-qr"
                                 className="mt-4 inline-block rounded bg-accent px-6 py-3 text-sm font-medium text-bg hover:bg-accent-hover"
                             >
                                 Voir les médailles

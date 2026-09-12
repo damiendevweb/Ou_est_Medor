@@ -30,7 +30,7 @@ export const HeroBanner = () => {
 
                     <div className="flex flex-wrap gap-2.5 mb-8">
                         <Link
-                            to="/categorie/medaille-gravee"
+                            to="/produit/medaille-qr"
                             className="inline-flex items-center gap-2 bg-accent hover:bg-accent-hover text-bg font-semibold text-sm px-6 py-2.5 rounded transition-all"
                         >
                             Commander

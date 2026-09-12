@@ -100,7 +100,7 @@ export const CheckoutSuccessPage = () => {
                         </Link>
                     )}
                     <Link
-                        to="/categorie/medaille-gravee"
+                        to="/produit/medaille-qr"
                         className="rounded border border-border px-6 py-3 text-sm font-medium text-text-primary hover:bg-bg-hover"
                     >
                         Continuer mes achats

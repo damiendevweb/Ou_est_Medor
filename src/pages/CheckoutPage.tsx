@@ -58,7 +58,7 @@ export const CheckoutPage = () => {
                         Votre panier est vide
                     </h1>
                     <Link
-                        to="/categorie/medaille-gravee"
+                        to="/produit/medaille-qr"
                         className="inline-block rounded bg-accent px-6 py-3 text-sm font-medium text-bg hover:bg-accent-hover"
                     >
                         Voir les médailles
@@ -69,8 +69,8 @@ export const CheckoutPage = () => {
     }
 
     return (
-        <div className="min-h-screen">
-            <div className="max-w-3xl mx-auto px-5 py-10">
+        <div>
+            <div className="max-w-3xl mx-auto px-5 pb-10">
                 <div className="mb-8">
                     <span className="text-[10px] font-semibold text-accent uppercase tracking-widest">
                         Paiement sécurisé

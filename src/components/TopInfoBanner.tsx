@@ -7,7 +7,7 @@ export const TopInfoBanner = () => {
     return (
         <div className="w-full overflow-hidden bg-[#6eff8e] py-2 z-60">
             <Link
-                to="/categorie/medaille-gravee"
+                to="/produit/medaille-qr"
                 className="flex whitespace-nowrap animate-marquee"
                 aria-label="Livraison gratuite ce week-end"
             >

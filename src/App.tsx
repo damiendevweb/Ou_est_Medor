@@ -59,7 +59,6 @@ function App() {
             path="/mes-commandes"
             element={user ? <OrdersPage /> : <Navigate to="/login" />}
           />
-          <Route path='categorie/medaille-gravee' element={<ProductList />} />
           <Route path='produit/:slug' element={<ProductPage />} />
           <Route path='generate-qr-code' element={<GenerateQR />} />
           <Route path='contact' element={<Contact />} />

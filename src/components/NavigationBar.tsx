@@ -67,7 +67,7 @@ export const NavigationBar = () => {
             <nav>
               <ul className="flex items-center gap-4">
                 {[
-                  { to: "/categorie/medaille-gravee", label: "Produits" },
+                  { to: "/produit/medaille-qr", label: "Acheter" },
                   { to: "/le-concept", label: "Concept" },
                   { to: "/notre-histoire", label: "Histoire" },
                   { to: "/contact", label: "Contact" },

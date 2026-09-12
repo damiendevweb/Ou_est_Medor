@@ -130,49 +130,13 @@ export const ProductPage = () => {
         )
     }
 
-    const accordionItems = [
-        ...(product.description
-            ? [{ name: 'description', label: 'Description', content: <p className="text-sm text-text-secondary">{product.description}</p> }]
-            : []),
-        {
-            name: 'caracteristiques',
-            label: 'Caractéristiques',
-            content: (
-                <div className="space-y-px bg-border rounded overflow-hidden">
-                    {[
-                        { label: 'Marque', value: 'Parfs' },
-                        { label: 'Collection', value: '2022' },
-                        { label: 'Référence', value: 'G480745' },
-                        { label: 'Matériau', value: 'Acier inoxydable' },
-                        { label: 'Diamètre', value: '30 mm' },
-                    ].map((row) => (
-                        <div key={row.label} className="bg-bg-elevated grid grid-cols-2 gap-4 px-4 py-2.5">
-                            <span className="text-xs text-text-muted">{row.label}</span>
-                            <span className="text-xs text-text-primary font-medium text-right">{row.value}</span>
-                        </div>
-                    ))}
-                </div>
-            ),
-        },
-        {
-            name: 'paiement',
-            label: 'Paiement & livraison',
-            content: (
-                <div className="space-y-2 text-xs text-text-secondary">
-                    <p>Paiement sécurisé par carte bancaire (Stripe).</p>
-                    <p>Livraison offerte en France métropolitaine sous 5-7 jours ouvrés.</p>
-                </div>
-            ),
-        },
-    ]
-
     return (
-        <div className="min-h-screen">
-            <div className="max-w-6xl mx-auto px-5 py-10">
+        <div className="relative -mt-22 md:mt-0">
+            <div className="max-w-6xl mx-auto md:px-5 md:py-10">
                 <div className="lg:grid lg:gap-8 lg:grid-cols-2 lg:items-start">
                     <ProductImageGallery images={sortedImages} productName={product.name} />
 
-                    <div className="flex flex-col gap-6 mt-8 lg:mt-0">
+                    <div className="flex flex-col gap-6 mt-8 lg:mt-0 px-5 md:px-0">
                         <div>
                             <div className="flex items-center gap-2 mb-3">
                                 <span className="text-[10px] font-semibold text-accent uppercase tracking-widest">Médaille connectée</span>

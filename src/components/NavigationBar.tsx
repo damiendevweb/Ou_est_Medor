@@ -9,7 +9,7 @@ export const NavigationBar = () => {
   const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
 
-  const isNotHomepage = location.pathname !== "/";
+  const isTransparent = location.pathname === "/" || location.pathname.startsWith("/produit");
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10);
@@ -27,7 +27,7 @@ export const NavigationBar = () => {
           transition-all duration-400
           hover:bg-white hover:shadow-[0_4px_8px_0px_rgb(0_0_0/15%)]
           ${
-            scrolled || isNotHomepage
+            scrolled || !isTransparent
               ? "bg-white shadow-[0_4px_8px_0px_rgb(0_0_0/15%)] header--is-activate"
               : "bg-transparent"
           }

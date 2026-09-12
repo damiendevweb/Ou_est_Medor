@@ -12,7 +12,7 @@ export const MobileMenuDrawer = () => {
   const location = useLocation();
 
   const navLinks = [
-    { to: "/categorie/medaille-gravee", label: "Produits" },
+    { to: "/produit/medaille-qr", label: "Acheter" },
     { to: "/le-concept", label: "Concept" },
     { to: "/notre-histoire", label: "Histoire" },
     { to: "/contact", label: "Contact" },

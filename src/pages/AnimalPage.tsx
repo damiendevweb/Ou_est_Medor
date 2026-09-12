@@ -230,7 +230,7 @@ export const AnimalPage = () => {
                     <p className="text-sm text-text-secondary mb-6">{error || 'Animal introuvable'}</p>
                     <p className="text-sm text-text-muted">
                         Vérifiez l'ID ou{' '}
-                        <Link to="/" className="text-accent hover:text-accent-hover font-medium">retourne à l'accueil</Link>
+                        <Link to="/" className="text-accent hover:text-accent-hover font-medium">retournez à l'accueil</Link>
                     </p>
                 </div>
             </div>

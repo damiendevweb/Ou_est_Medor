@@ -52,7 +52,7 @@ export const ProductPage = () => {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-bg flex items-center justify-center">
+            <div className="min-h-screen flex items-center justify-center">
                 <p className="text-sm text-text-muted">Chargement...</p>
             </div>
         )
@@ -60,7 +60,7 @@ export const ProductPage = () => {
 
     if (error) {
         return (
-            <div className="min-h-screen bg-bg flex items-center justify-center">
+            <div className="min-h-screen flex items-center justify-center">
                 <p className="text-sm text-error">{error}</p>
             </div>
         )
@@ -68,7 +68,7 @@ export const ProductPage = () => {
 
     if (!product) {
         return (
-            <div className="min-h-screen bg-bg flex items-center justify-center">
+            <div className="min-h-screen flex items-center justify-center">
                 <p className="text-sm text-text-muted">Produit introuvable.</p>
             </div>
         )

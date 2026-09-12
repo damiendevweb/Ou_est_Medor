@@ -177,7 +177,7 @@ export const CheckoutPage = () => {
                                 onClick={handlePay}
                                 className="mt-4 flex w-full items-center justify-center rounded bg-accent px-6 py-3 text-sm font-medium text-bg hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-50"
                             >
-                                {loading ? 'Redirection vers Stripe…' : 'Payer en toute sécurité'}
+                                {loading ? 'Redirection vers Stripe…' : 'Paiement'}
                             </button>
 
                             <p className="mt-3 text-center text-[10px] text-text-muted">

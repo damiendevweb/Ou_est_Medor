@@ -13,6 +13,7 @@ import { TopInfoBanner } from './components/TopInfoBanner'
 import { ProfilePage } from './pages/Profile'
 import { Footer } from './components/Footer'
 import { PWAInstallPrompt } from './components/PWAInstallPrompt'
+import { CookieConsent } from './components/CookieConsent'
 import { Contact } from './pages/Contact'
 import { ProductPage } from './pages/ProductPage'
 import { BlogPostPage } from './pages/BlogPostPage'
@@ -73,6 +74,7 @@ function App() {
         </Routes>
 
         {showPWA && <PWAInstallPrompt />}
+        <CookieConsent />
         <Footer />
       </div>
     </ToastProvider>

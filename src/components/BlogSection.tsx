@@ -5,10 +5,9 @@ export const BlogSection = () => {
     return (
         <section className="bg-bg-elevated border-y border-border py-20">
             <div className="max-w-7xl mx-auto px-5">
-                <div className="flex items-center gap-3 mb-10">
-                    <span className="text-[10px] font-semibold text-accent uppercase tracking-widest">Blog</span>
-                    <div className="flex-1 h-px bg-border" />
-                </div>
+                <h2 className="text-center text-2xl md:text-3xl font-bold text-text-primary mb-10 font-unbounded">
+                    Blog
+                </h2>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-border rounded overflow-hidden">
                     {blogPosts.map((post) => (

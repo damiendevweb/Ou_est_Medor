@@ -12,16 +12,6 @@ export const BlogPostPage = () => {
     return (
         <div className="min-h-screen">
             <div className="max-w-3xl mx-auto px-5 py-12">
-                <Link
-                    to="/"
-                    className="inline-flex items-center gap-2 text-xs text-text-muted hover:text-text-secondary transition-colors mb-8"
-                >
-                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-                    </svg>
-                    Retour aux articles
-                </Link>
-
                 <article className="bg-bg-elevated border border-border overflow-hidden">
 
                     <div className="p-8 md:p-10">
@@ -78,7 +68,7 @@ export const BlogPostPage = () => {
 
                 <div className="text-center mt-8">
                     <Link
-                        to="/"
+                        to="/blog"
                         className="inline-flex items-center gap-2 text-xs text-accent hover:text-accent-hover font-medium transition-colors"
                     >
                         <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>

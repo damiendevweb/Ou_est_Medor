@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 const faqItems = [
     {
@@ -23,11 +24,11 @@ const faqItems = [
     },
 ]
 
-export function FaqAccordion() {
+export function FaqAccordion({ showLink = false }) {
     const [open, setOpen] = useState<number | null>(null)
 
     return (
-        <div className="space-px bg-border rounded overflow-hidden">
+        <div className="space-px overflow-hidden">
             {faqItems.map((item, i) => (
                 <div key={i} className="bg-bg-elevated">
                     <button
@@ -53,6 +54,14 @@ export function FaqAccordion() {
                     )}
                 </div>
             ))}
+            {showLink && (
+                <Link
+                    to="/faq"
+                    className="link-style text-xs text-text-secondary"
+                >
+                    Voir toutes les questions
+                </Link>
+            )}
         </div>
     )
 }

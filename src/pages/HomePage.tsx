@@ -10,39 +10,17 @@ const steps = [
     { step: '04', title: 'Alerte', desc: 'Notification push + géolocalisation. Retrouvailles rapides.' },
 ]
 
-const stats = [
-    { value: '2 500+', label: 'Animaux' },
-    { value: '98%', label: 'Retrouvailles' },
-    { value: '4.9/5', label: 'Avis' },
-    { value: '10 min', label: 'Scan → contact' },
-]
-
 export const HomePage = () => {
     return (
         <>
             <HeroBanner />
 
-            {/* ── Stats bar ── */}
-            <section className="bg-bg-elevated border-y border-border">
-                <div className="max-w-7xl mx-auto px-5 py-6">
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                        {stats.map((s) => (
-                            <div key={s.label} className="flex items-baseline gap-2">
-                                <span className="text-lg font-bold text-accent">{s.value}</span>
-                                <span className="text-xs text-text-muted">{s.label}</span>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
             {/* ── How it works ── */}
             <section className="py-20">
                 <div className="max-w-7xl mx-auto px-5">
-                    <div className="flex items-center gap-3 mb-10">
-                        <span className="text-[10px] font-semibold text-accent uppercase tracking-widest">Processus</span>
-                        <div className="flex-1 h-px bg-border" />
-                    </div>
+                    <h2 className="text-center text-2xl md:text-3xl font-bold text-text-primary mb-10 font-unbounded">
+                        Comment ça marche ?
+                    </h2>
 
                     <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-border rounded overflow-hidden">
                         {steps.map((s) => (
@@ -61,10 +39,6 @@ export const HomePage = () => {
                 <div className="max-w-7xl mx-auto px-5">
                     <div className="grid lg:grid-cols-2 gap-12 items-center">
                         <div>
-                            <div className="flex items-center gap-3 mb-6">
-                                <span className="text-[10px] font-semibold text-accent uppercase tracking-widest">Produit</span>
-                                <div className="flex-1 h-px bg-border" />
-                            </div>
                             <h2 className="font-unbounded text-2xl md:text-3xl font-bold text-text-primary mb-4">
                                 La médaille qui change tout
                             </h2>
@@ -108,11 +82,10 @@ export const HomePage = () => {
             {/* ── FAQ ── */}
             <section className="py-20">
                 <div className="max-w-3xl mx-auto px-5">
-                    <div className="flex items-center gap-3 mb-10">
-                        <span className="text-[10px] font-semibold text-accent uppercase tracking-widest">FAQ</span>
-                        <div className="flex-1 h-px bg-border" />
-                    </div>
-                    <FaqAccordion />
+                    <h2 className="text-center text-2xl md:text-3xl font-bold text-text-primary mb-10 font-unbounded">
+                        Questions fréquentes
+                    </h2>
+                    <FaqAccordion showLink />
                 </div>
             </section>
 

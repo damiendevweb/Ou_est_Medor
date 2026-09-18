@@ -138,10 +138,6 @@ export const ProductPage = () => {
 
                     <div className="flex flex-col gap-6 mt-8 lg:mt-0 px-5 md:px-0">
                         <div>
-                            <div className="flex items-center gap-2 mb-3">
-                                <span className="text-[10px] font-semibold text-accent uppercase tracking-widest">Médaille connectée</span>
-                                <div className="flex-1 h-px bg-border" />
-                            </div>
                             <h1 className="font-unbounded text-2xl md:text-3xl text-text-primary">
                                 {product.name}
                             </h1>

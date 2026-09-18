@@ -69,10 +69,9 @@ export const LeConcept = () => {
             {/* How it works */}
             <section className="bg-bg-elevated border-y border-border py-20">
                 <div className="max-w-7xl mx-auto px-5">
-                    <div className="flex items-center gap-3 mb-10">
-                        <span className="text-[10px] font-semibold text-accent uppercase tracking-widest">Processus</span>
-                        <div className="flex-1 h-px bg-border" />
-                    </div>
+                    <h2 className="text-center text-2xl md:text-3xl font-bold text-text-primary mb-10 font-unbounded">
+                        Comment ça marche ?
+                    </h2>
                     <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-border rounded overflow-hidden">
                         {steps.map((s) => (
                             <div key={s.num} className="bg-bg-elevated p-6">
@@ -88,10 +87,9 @@ export const LeConcept = () => {
             {/* Comparison */}
             <section className="bg-bg py-20">
                 <div className="max-w-4xl mx-auto px-5">
-                    <div className="flex items-center gap-3 mb-10">
-                        <span className="text-[10px] font-semibold text-accent uppercase tracking-widest">Comparaison</span>
-                        <div className="flex-1 h-px bg-border" />
-                    </div>
+                    <h2 className="text-center text-2xl md:text-3xl font-bold text-text-primary mb-10 font-unbounded">
+                        Pourquoi pas un collier classique ?
+                    </h2>
                     <div className="space-px bg-border rounded overflow-hidden">
                         {comparisons.map((c, i) => (
                             <div key={i} className="bg-bg-elevated grid md:grid-cols-2 gap-px">
@@ -112,10 +110,9 @@ export const LeConcept = () => {
             {/* Materials */}
             <section className="bg-bg-elevated border-y border-border py-20">
                 <div className="max-w-7xl mx-auto px-5">
-                    <div className="flex items-center gap-3 mb-10">
-                        <span className="text-[10px] font-semibold text-accent uppercase tracking-widest">Matériaux</span>
-                        <div className="flex-1 h-px bg-border" />
-                    </div>
+                    <h2 className="text-center text-2xl md:text-3xl font-bold text-text-primary mb-10 font-unbounded">
+                        Des matériaux de qualité
+                    </h2>
                     <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-border rounded overflow-hidden">
                         {materials.map((m) => (
                             <div key={m.title} className="bg-bg-elevated p-6 hover:bg-bg-hover transition-colors">

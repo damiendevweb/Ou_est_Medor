@@ -20,10 +20,7 @@ export const ProductCustomization = ({
 }: Props) => {
     return (
         <div>
-            <div className="flex items-center gap-2 mb-3">
-                <span className="text-[10px] font-semibold text-accent uppercase tracking-widest">Personnalisation</span>
-                <div className="flex-1 h-px bg-border" />
-            </div>
+            <h3 className="text-lg font-semibold text-text-primary mb-4 font-unbounded">Personnalisation</h3>
             <div className="space-y-4">
                 <Field label="Nom de l'animal *">
                     <Input

@@ -72,10 +72,7 @@ export const CheckoutPage = () => {
         <div>
             <div className="max-w-3xl mx-auto px-5 pb-10">
                 <div className="mb-8">
-                    <span className="text-[10px] font-semibold text-accent uppercase tracking-widest">
-                        Paiement sécurisé
-                    </span>
-                    <h1 className="font-unbounded text-2xl md:text-3xl font-bold text-text-primary mt-2">
+                    <h1 className="font-unbounded text-2xl md:text-3xl font-bold text-text-primary">
                         Commande
                     </h1>
                 </div>

@@ -23,6 +23,13 @@ import { ToastProvider } from './components/Toast'
 import { CheckoutPage } from './pages/CheckoutPage'
 import { CheckoutSuccessPage } from './pages/CheckoutSuccessPage'
 import { OrdersPage } from './pages/OrdersPage'
+import { CGV } from './pages/CGV'
+import { PolitiqueConfidentialite } from './pages/PolitiqueConfidentialite'
+import { MentionsLegales } from './pages/MentionsLegales'
+import { PolitiqueCookies } from './pages/PolitiqueCookies'
+import { FAQPage } from './pages/FAQPage'
+import { BlogPage } from './pages/BlogPage'
+import { USPs } from './components/USPs'
 
 function App() {
   const { user, loading } = useAuth()
@@ -37,13 +44,14 @@ function App() {
   }
 
   const showPWA = (location.pathname === '/dashboard' || location.pathname === '/profile') && user
+  const isAnimalPage = /^\/[A-Z0-9]{5}$/.test(location.pathname)
 
   return (
     <ToastProvider>
       <div className="min-h-screen flex flex-col">
         <ScrollToTop />
-        <TopInfoBanner />
-        <NavigationBar />
+        {!isAnimalPage && <TopInfoBanner />}
+        {!isAnimalPage && <NavigationBar />}
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<AuthPage />} />
@@ -64,9 +72,15 @@ function App() {
           <Route path='contact' element={<Contact />} />
           <Route path='notre-histoire' element={<NotreHistoire />} />
           <Route path='le-concept' element={<LeConcept />} />
+          <Route path='blog' element={<BlogPage />} />
           <Route path='blog/:slug' element={<BlogPostPage />} />
           <Route path='/commande' element={<CheckoutPage />} />
           <Route path='/paiement/succes' element={<CheckoutSuccessPage />} />
+          <Route path='/cgv' element={<CGV />} />
+          <Route path='/politique-de-confidentialite' element={<PolitiqueConfidentialite />} />
+          <Route path='/mentions-legales' element={<MentionsLegales />} />
+          <Route path='/politique-de-cookies' element={<PolitiqueCookies />} />
+          <Route path='/faq' element={<FAQPage />} />
 
           <Route path="/:animalId" element={<AnimalPage />} />
 
@@ -74,8 +88,9 @@ function App() {
         </Routes>
 
         {showPWA && <PWAInstallPrompt />}
-        <CookieConsent />
-        <Footer />
+        {!isAnimalPage && <CookieConsent />}
+        {!isAnimalPage && <USPs />}
+        {!isAnimalPage && <Footer />}
       </div>
     </ToastProvider>
   )

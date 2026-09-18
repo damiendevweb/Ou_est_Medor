@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mockup Notification</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        .phone-frame {
+            position: relative;
+            width: 380px;
+            height: 780px;
+            background: #000;
+            border-radius: 55px;
+            padding: 12px;
+            box-shadow: 0 0 0 2px #333, 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .phone-screen {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-radius: 44px;
+            overflow: hidden;
+            background: #f0f0f0;
+        }
+
+        .phone-screen img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+        }
+
+        .status-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 54px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 28px;
+            z-index: 10;
+        }
+
+        .status-time {
+            font-size: 15px;
+            font-weight: 600;
+            color: #000;
+        }
+
+        .status-icons {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #000;
+        }
+
+        .dynamic-island {
+            position: absolute;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 34px;
+            background: #000;
+            border-radius: 20px;
+            z-index: 20;
+        }
+
+        .notification {
+            position: absolute;
+            bottom: 120px;
+            left: 16px;
+            right: 16px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-radius: 20px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            z-index: 30;
+        }
+
+        .notif-icon {
+            width: 42px;
+            height: 42px;
+            background: #3d5a47;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .notif-icon svg {
+            width: 22px;
+            height: 22px;
+            fill: white;
+        }
+
+        .notif-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .notif-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2px;
+        }
+
+        .notif-app {
+            font-size: 13px;
+            font-weight: 600;
+            color: #000;
+        }
+
+        .notif-time {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .notif-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #000;
+            margin-bottom: 1px;
+        }
+
+        .notif-body {
+            font-size: 13px;
+            color: #444;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-frame">
+        <div class="phone-screen">
+            <img src="images/hero-1.jpg" alt="Chien">
+
+            <div class="dynamic-island"></div>
+
+            <div class="status-bar">
+                <span class="status-time">9:41</span>
+                <span class="status-icons">
+                    <svg width="17" height="12" viewBox="0 0 17 12" fill="none">
+                        <path d="M1 8.5H3V12H1V8.5ZM5 6H7V12H5V6ZM9 3.5H11V12H9V3.5ZM13 1H15V12H13V1Z" fill="#000"/>
+                    </svg>
+                    <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
+                        <path d="M8 2.4C5.6 2.4 3.4 3.4 1.8 5L0 3.2C2.2 1.2 5 0 8 0C11 0 13.8 1.2 16 3.2L14.2 5C12.6 3.4 10.4 2.4 8 2.4ZM8 7.2C6.8 7.2 5.6 7.7 4.8 8.4L3 6.6C4.4 5.4 6.1 4.8 8 4.8C9.9 4.8 11.6 5.4 13 6.6L11.2 8.4C10.4 7.7 9.2 7.2 8 7.2ZM8 12L9.6 9.6C8.8 8.9 7.2 8.9 6.4 9.6L8 12Z" fill="#000"/>
+                    </svg>
+                    <svg width="25" height="12" viewBox="0 0 25 12" fill="none">
+                        <rect x="0.5" y="0.5" width="21" height="11" rx="3.5" stroke="#000" stroke-opacity="0.35"/>
+                        <rect x="2" y="2" width="17" height="8" rx="2" fill="#000"/>
+                        <path d="M23 4.5V8.5C23.8 8.2 24.5 7.2 24.5 6.5C24.5 5.8 23.8 4.8 23 4.5Z" fill="#000" fill-opacity="0.4"/>
+                    </svg>
+                </span>
+            </div>
+
+            <div class="notification">
+                <div class="notif-icon">
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="7" cy="5" r="2.5"/>
+                        <circle cx="12" cy="3" r="2.5"/>
+                        <circle cx="17" cy="5" r="2.5"/>
+                        <ellipse cx="12" cy="14" rx="5" ry="6"/>
+                    </svg>
+                </div>
+                <div class="notif-content">
+                    <div class="notif-header">
+                        <span class="notif-app">Où est Médor ?</span>
+                        <span class="notif-time">3m</span>
+                    </div>
+                    <div class="notif-title">Alerte Où est Médor !</div>
+                    <div class="notif-body">Quelqu'un a scanné la médaille de votre animal</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

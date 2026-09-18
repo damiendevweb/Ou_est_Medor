@@ -1,2 +1,9 @@
 User-agent: *
 Allow: /
+Disallow: /dashboard
+Disallow: /profile
+Disallow: /mes-commandes
+Disallow: /commande
+Disallow: /paiement
+
+Sitemap: https://ouestmedor.fr/sitemap.xml

@@ -29,7 +29,7 @@ export const CookieConsent = () => {
                     <p className="text-sm font-semibold text-text-primary mb-1">Préférences de cookies</p>
                     <p className="text-xs text-text-secondary leading-relaxed">
                         Ce site utilise des cookies et d'autres technologies pour personnaliser votre expérience et effectuer des mesures d'audience. Aucun traceur publicitaire ne tourne sur ce site. <br />
-                        Pour plus d'informations, vous pouvez consulter notre <Link to="/politique-de-cookies">politique de cookies</Link> et de <Link to="/politique-de-confidentialite">confidentialité</Link>. Vous pouvez aussi retirer votre consentement à tout moment.
+                        Pour plus d'informations, vous pouvez consulter notre <Link to="/politique-de-cookies" className="link-style">politique de cookies</Link> et de <Link to="/politique-de-confidentialite" className="link-style">confidentialité</Link>. Vous pouvez aussi retirer votre consentement à tout moment.
                     </p>
                 </div>
                 <div className="flex gap-2 shrink-0">

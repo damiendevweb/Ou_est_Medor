@@ -47,7 +47,7 @@ export const AnimalPage = () => {
     const toastShownRef = useRef(false)
     const [manualNotifyPending, setManualNotifyPending] = useState(false)
 
-    const { display: ageDisplay } = useAge(formData.birth_date)
+    const { display: ageDisplay } = useAge(animal?.birth_date)
     const { getLocationPromise } = useGeolocation()
     const { showToast } = useToast()
     const { user } = useAuth()
@@ -291,92 +291,100 @@ export const AnimalPage = () => {
     }
 
     return (
-        <div className="flex-1">
-            <div className="max-w-2xl mx-auto px-5">
-                <p className="text-text-primary *:text-sm mb-6 text-center">
-                    Vous venez de scanner la fiche de {animal.nom}, Appelez rapidement son propriétaire à l'aide des informations disponibles ci-dessous. S'il ne répond pas, n'hésitez pas à lui envoyer un SMS ou à contacter son vétérinaire.
-                </p>
-                <div className="bg-bg-elevated border border-border overflow-hidden">
-                    <div className="bg-accent p-8 text-bg text-center">
-                        <h2 className="font-unbounded text-2xl font-bold">{animal.nom}</h2>
-                        <p className="text-bg/80 text-sm mt-1">{animal.race}</p>
-                        <span className="inline-block mt-3 bg-bg/20 rounded px-2.5 py-1 text-xs">
-                            {animal.id}
-                        </span>
-                    </div>
+        <div className="max-w-2xl m-auto p-5">
+            <p className="text-text-primary *:text-sm mb-6 text-center">
+                Vous venez de scanner la fiche de {animal.nom}, Appelez rapidement son propriétaire à l'aide des informations disponibles ci-dessous. S'il ne répond pas, n'hésitez pas à lui envoyer un SMS ou à contacter son vétérinaire.
+            </p>
+            <div className="bg-bg-elevated border border-border overflow-hidden">
+                <div className="bg-accent p-8 text-bg text-center">
+                    <h2 className="font-unbounded text-2xl font-bold">{animal.nom}</h2>
+                    <p className="text-bg/80 text-sm mt-1">{animal.race}</p>
+                    <span className="inline-block mt-3 bg-bg/20 rounded px-2.5 py-1 text-xs">
+                        {animal.id}
+                    </span>
+                </div>
 
-                    <div className="p-6 md:p-8 space-y-4">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-border rounded overflow-hidden">
-                            <div className="bg-bg-elevated p-5">
-                                <h3 className="font-semibold text-text-muted mb-3 text-xs uppercase tracking-wider">Infos physiques</h3>
-                                <div className="space-y-2 text-sm">
-                                    <p className="flex justify-between"><span className="text-text-muted">Âge</span><span className="font-medium text-text-primary">{ageDisplay}</span></p>
-                                    <p className="flex justify-between"><span className="text-text-muted">Poids</span><span className="font-medium text-text-primary">{animal.poids} kg</span></p>
-                                </div>
-                            </div>
-
-                            <div className="bg-bg-elevated p-5">
-                                <h3 className="font-semibold text-text-muted mb-3 text-xs uppercase tracking-wider">Compatibilités</h3>
-                                <div className="flex flex-wrap gap-1.5">
-                                    <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded text-xs font-medium border ${animal.ok_congenere ? 'bg-success/10 text-success border-success/20' : 'bg-bg-surface text-text-muted border-border'}`}>
-                                        {animal.ok_congenere ? '✓ Congénères' : '✗ Congénères'}
-                                    </span>
-                                    <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded text-xs font-medium border ${animal.ok_enfants ? 'bg-success/10 text-success border-success/20' : 'bg-bg-surface text-text-muted border-border'}`}>
-                                        {animal.ok_enfants ? '✓ Enfants' : '✗ Enfants'}
-                                    </span>
-                                </div>
+                <div className="p-6 md:p-8 space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-border rounded overflow-hidden">
+                        <div className="bg-bg-elevated p-5">
+                            <h3 className="font-semibold text-text-muted mb-3 text-xs uppercase tracking-wider">Informations physiques</h3>
+                            <div className="space-y-2 text-sm">
+                                <p className="flex justify-between"><span className="text-text-muted">Âge</span><span className="font-medium text-text-primary">{ageDisplay}</span></p>
+                                <p className="flex justify-between"><span className="text-text-muted">Poids</span><span className="font-medium text-text-primary">{animal.poids} kg</span></p>
                             </div>
                         </div>
 
-                        <div className="bg-bg-elevated rounded border border-border p-5">
-                            <h3 className="font-semibold text-text-muted mb-3 text-xs uppercase tracking-wider">Contacts</h3>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                                <div>
-                                    <p className="text-text-muted text-xs">Propriétaire</p>
-                                    <p className="font-medium text-text-primary">{animal.prenom_proprietaire}</p>
-                                </div>
-                                <div>
-                                    <p className="text-text-muted text-xs">Téléphone</p>
-                                    <p className="font-medium">
-                                        <a href={`tel:${animal.telephone_1}`} className="text-accent hover:text-accent-hover">
-                                            {animal.telephone_1}
-                                        </a>
-                                        {animal.telephone_2 && (
-                                            <> · <a href={`tel:${animal.telephone_2}`} className="text-accent hover:text-accent-hover opacity-80">{animal.telephone_2}</a></>
-                                        )}
-                                    </p>
-                                </div>
-                                <div>
-                                    <p className="text-text-muted text-xs">Email</p>
-                                    <p className="font-medium">
-                                        <a href={`mailto:${animal.mail_1}`} className="text-accent hover:text-accent-hover">
-                                            {animal.mail_1}
-                                        </a>
-                                        {animal.mail_2 && (
-                                            <> · <a href={`mailto:${animal.mail_2}`} className="text-accent hover:text-accent-hover opacity-80">{animal.mail_2}</a></>
-                                        )}
-                                    </p>
-                                </div>
-                                <div>
-                                    <p className="text-text-muted text-xs">Vétérinaire</p>
-                                    <p className="font-medium">
-                                        <a href={`tel:${animal.telephone_veterinaire}`} className="text-accent hover:text-accent-hover">
-                                            {animal.telephone_veterinaire}
-                                        </a>
-                                    </p>
-                                </div>
+                        <div className="bg-bg-elevated p-5">
+                            <h3 className="font-semibold text-text-muted mb-3 text-xs uppercase tracking-wider">Compatibilités</h3>
+                            <div className="flex flex-wrap gap-1.5">
+                                <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded text-xs font-medium border ${animal.ok_congenere ? 'bg-success/10 text-success border-success/20' : 'bg-bg-surface text-text-muted border-border'}`}>
+                                    {animal.ok_congenere ? '✓ Congénères' : '✗ Congénères'}
+                                </span>
+                                <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded text-xs font-medium border ${animal.ok_enfants ? 'bg-success/10 text-success border-success/20' : 'bg-bg-surface text-text-muted border-border'}`}>
+                                    {animal.ok_enfants ? '✓ Enfants' : '✗ Enfants'}
+                                </span>
                             </div>
                         </div>
-
-                        <button
-                            type="button"
-                            onClick={handleManualNotify}
-                            disabled={manualNotifyPending}
-                            className="w-full bg-accent hover:bg-accent-hover text-bg font-semibold text-sm py-2.5 rounded transition-colors disabled:opacity-50"
-                        >
-                            {manualNotifyPending ? 'Localisation en cours...' : 'Prévenir le propriétaire que vous avez retrouvé son animal'}
-                        </button>
                     </div>
+
+                    <div className="bg-bg-elevated rounded border border-border p-5">
+                        <h3 className="font-semibold text-text-muted mb-3 text-xs uppercase tracking-wider">Contacts</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                            <div>
+                                <p className="text-text-muted text-xs">Propriétaire</p>
+                                <p className="font-medium text-text-primary">{animal.prenom_proprietaire}</p>
+                            </div>
+                            <div>
+                                <p className="text-text-muted text-xs">Téléphone 1</p>
+                                <p className="font-medium">
+                                    <a href={`tel:${animal.telephone_1}`} className="text-accent hover:text-accent-hover">
+                                        {animal.telephone_1}
+                                    </a>
+                                </p>
+                            </div>
+                            <div>
+                                <p className="text-text-muted text-xs">Téléphone 2</p>
+                                <p className="font-medium">
+                                    <a href={`tel:${animal.telephone_2}`} className="text-accent hover:text-accent-hover">
+                                        {animal.telephone_2}
+                                    </a>
+                                </p>
+                            </div>
+                            <div>
+                                <p className="text-text-muted text-xs">Email 1</p>
+                                <p className="font-medium">
+                                    <a href={`mailto:${animal.mail_1}`} className="text-accent hover:text-accent-hover">
+                                        {animal.mail_1}
+                                    </a>
+                                </p>
+                            </div>
+                            <div>
+                                <p className="text-text-muted text-xs">Email 2</p>
+                                <p className="font-medium">
+                                    <a href={`mailto:${animal.mail_2}`} className="text-accent hover:text-accent-hover">
+                                        {animal.mail_2}
+                                    </a>
+                                </p>
+                            </div>
+                            <div>
+                                <p className="text-text-muted text-xs">Vétérinaire</p>
+                                <p className="font-medium">
+                                    <a href={`tel:${animal.telephone_veterinaire}`} className="text-accent hover:text-accent-hover">
+                                        {animal.telephone_veterinaire}
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button
+                        type="button"
+                        onClick={handleManualNotify}
+                        disabled={manualNotifyPending}
+                        className="w-full bg-accent hover:bg-accent-hover text-bg font-semibold text-sm py-2.5 rounded transition-colors disabled:opacity-50"
+                    >
+                        {manualNotifyPending ? 'Localisation en cours...' : 'Prévenir le propriétaire que vous avez retrouvé son animal'}
+                    </button>
                 </div>
             </div>
         </div>

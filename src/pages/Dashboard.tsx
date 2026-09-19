@@ -300,7 +300,7 @@ export const Dashboard = () => {
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                             <div className="bg-bg-surface p-5 rounded border border-border">
-                                <h3 className="text-xs font-semibold text-text-muted mb-3 uppercase tracking-wider">Infos physiques</h3>
+                                <h3 className="text-xs font-semibold text-text-muted mb-3 uppercase tracking-wider">Informations physiques</h3>
                                 {editing ? (
                                     <div className="space-y-2">
                                         <input type="date" value={formData.birth_date ?? ''} onChange={(e) => setFormData({ ...formData, birth_date: e.target.value })} className={inputClass} />
@@ -347,20 +347,29 @@ export const Dashboard = () => {
                                     <>
                                         <input type="text" value={formData.prenom_proprietaire ?? ''} onChange={(e) => setFormData({ ...formData, prenom_proprietaire: e.target.value })} className={inputClass} placeholder="Prénom propriétaire" />
                                         <input type="tel" value={formData.telephone_1 ?? ''} onChange={(e) => setFormData({ ...formData, telephone_1: e.target.value })} className={inputClass} placeholder="Téléphone 1" />
+                                        <input type="tel" value={formData.telephone_2 ?? ''} onChange={(e) => setFormData({ ...formData, telephone_2: e.target.value })} className={inputClass} placeholder="Téléphone 2 (optionnel)" />
                                         <input type="email" value={formData.mail_1 ?? ''} onChange={(e) => setFormData({ ...formData, mail_1: e.target.value })} className={inputClass} placeholder="Email 1" />
+                                        <input type="email" value={formData.mail_2 ?? ''} onChange={(e) => setFormData({ ...formData, mail_2: e.target.value })} className={inputClass} placeholder="Email 2 (optionnel)" />
                                         <input type="tel" value={formData.telephone_veterinaire ?? ''} onChange={(e) => setFormData({ ...formData, telephone_veterinaire: e.target.value })} className={inputClass} placeholder="Téléphone vétérinaire" />
                                     </>
                                 ) : (
                                     <>
                                         <p className="text-sm"><span className="text-text-muted">Propriétaire :</span> <span className="font-medium text-text-primary">{animal.prenom_proprietaire}</span></p>
                                         <p className="text-sm">
-                                            <span className="text-text-muted">Tél : </span>
+                                            <span className="text-text-muted">Téléphone 1 : </span>
                                             <a href={`tel:${animal.telephone_1}`} className="text-accent hover:text-accent-hover font-medium">{animal.telephone_1}</a>
-                                            {animal.telephone_2 && <span className="text-text-muted"> · <a href={`tel:${animal.telephone_2}`} className="text-accent hover:text-accent-hover">{animal.telephone_2}</a></span>}
                                         </p>
                                         <p className="text-sm">
-                                            <span className="text-text-muted">Email : </span>
+                                            <span className="text-text-muted">Téléphone 2 : </span>
+                                            <a href={`tel:${animal.telephone_2}`} className="text-accent hover:text-accent-hover font-medium">{animal.telephone_2}</a>
+                                        </p>
+                                        <p className="text-sm">
+                                            <span className="text-text-muted">Email 1 : </span>
                                             <a href={`mailto:${animal.mail_1}`} className="text-accent hover:text-accent-hover font-medium">{animal.mail_1}</a>
+                                        </p>
+                                        <p className="text-sm">
+                                            <span className="text-text-muted">Email 2 : </span>
+                                            <a href={`mailto:${animal.mail_2}`} className="text-accent hover:text-accent-hover font-medium">{animal.mail_2}</a>
                                         </p>
                                         <p className="text-sm">
                                             <span className="text-text-muted">Vétérinaire : </span>

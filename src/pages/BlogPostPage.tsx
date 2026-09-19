@@ -1,9 +1,30 @@
 import { useParams, Link, Navigate } from 'react-router-dom'
 import { getBlogPost } from '../data/blogPosts'
+import { useEffect } from 'react'
 
 export const BlogPostPage = () => {
     const { slug } = useParams<{ slug: string }>()
     const post = getBlogPost(slug || '')
+
+    useEffect(() => {
+        if (post) {
+            document.title = `${post.title} — Où est Médor ?`
+            const canonical = document.querySelector("link[rel='canonical']")
+            if (canonical) {
+                canonical.setAttribute('href', 'https://ouestmedor.fr/produit/medaille-qr')
+            } else {
+                const link = document.createElement('link')
+                link.rel = 'canonical'
+                link.href = 'https://ouestmedor.fr/produit/medaille-qr'
+                document.head.appendChild(link)
+            }
+        }
+        return () => {
+            document.title = 'Où est Médor ?'
+            const canonical = document.querySelector("link[rel='canonical']")
+            if (canonical) canonical.remove()
+        }
+    }, [post, slug])
 
     if (!post) {
         return <Navigate to="/" replace />

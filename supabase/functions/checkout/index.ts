@@ -249,7 +249,7 @@ Deno.serve(async (req) => {
         allow_promotion_codes: true,
         shipping_address_collection: { allowed_countries: ['FR'] },
         shipping_options: [
-          { shipping_rate: 'shr_1UCSynCXJb1kHoqtrKKY6NFZ' },
+          { shipping_rate: 'shr_1UHVcrDkQUqMgRAJPAdEuoJi' },
         ],
         metadata: {
           order_id: orderId,

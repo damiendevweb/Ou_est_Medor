@@ -2,7 +2,7 @@ const MAX_WIDTH = 600
 const MAX_HEIGHT = 600
 const QUALITY = 0.8
 
-export const compressImage = (file: File): Promise<Blob> => {
+export const compressImage = (file: File | Blob): Promise<Blob> => {
     return new Promise((resolve, reject) => {
         const img = new Image()
         const url = URL.createObjectURL(file)

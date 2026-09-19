@@ -199,12 +199,13 @@ export const Dashboard = () => {
         setCropFile(null)
         setUploading(true)
         try {
+            const compressed = await compressImage(blob)
             const ext = 'jpg'
             const path = `${user.id}/${animal.id}.${ext}`
 
             const { error: uploadError } = await supabase.storage
                 .from('animal-photos')
-                .upload(path, blob, { upsert: true })
+                .upload(path, compressed, { upsert: true })
 
             if (uploadError) throw uploadError
 

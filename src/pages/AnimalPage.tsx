@@ -5,6 +5,7 @@ import { reverseGeocode } from '../lib/reverse-geocoding'
 import { useGeolocation } from '../hooks/useGeolocation'
 import { useAge } from '../hooks/useAge'
 import { useToast } from '../components/Toast'
+import { useAuth } from '../hooks/useAuth'
 
 type Animal = {
     id: string
@@ -21,6 +22,7 @@ type Animal = {
     prenom_proprietaire: string
     telephone_veterinaire: string
     birth_date?: string
+    user_id: string | null
 }
 
 type AccessMeta = {
@@ -48,9 +50,10 @@ export const AnimalPage = () => {
     const { display: ageDisplay } = useAge(formData.birth_date)
     const { getLocationPromise } = useGeolocation()
     const { showToast } = useToast()
+    const { user } = useAuth()
 
     const normalizedAnimalId = animalId?.toUpperCase() ?? ''
-    const isFicheEmpty = animal && (!animal.nom || animal.nom.trim() === '')
+    const isFicheEmpty = animal && (!animal.nom || animal.nom.trim() === '') && !animal.user_id
 
     const logAnimalAccess = async (id: string, meta: AccessMeta) => {
         try {
@@ -139,6 +142,7 @@ export const AnimalPage = () => {
         if (!animal?.id) return
         if (typeof window === 'undefined') return
         if (hasSentAccessEvent.current) return
+        if (isFicheEmpty) return
 
         hasSentAccessEvent.current = true
 
@@ -248,22 +252,39 @@ export const AnimalPage = () => {
                         Fiche {normalizedAnimalId}
                     </h2>
                     <p className="text-sm text-text-secondary mb-4 leading-relaxed">
-                        La fiche de ce chien <strong className="text-text-primary">n'est pas encore remplie</strong>. C'est le vôtre ?
+                        La fiche de cet animal <strong className="text-text-primary">n'est pas encore remplie</strong>. Est-ce bien la vôtre ?
                     </p>
                     <div className="bg-bg-surface rounded p-3 mb-6 border border-border">
                         <p className="text-xs font-medium text-text-secondary">
-                            Inscrivez-vous pour remplir sa fiche complète
+                            Inscrivez ou connectez vous dès maintenant pour remplir sa fiche
                         </p>
                     </div>
-                    <a
-                        href={`/login?mode=signup&animal=${normalizedAnimalId}`}
-                        className="inline-block w-full bg-accent hover:bg-accent-hover text-bg font-semibold text-sm py-3 px-6 rounded transition-all text-center"
-                    >
-                        Remplir ma fiche
-                    </a>
-                    <p className="text-xs text-text-muted mt-5 bg-bg-surface px-3 py-1 rounded inline-block border border-border">
-                        ID: {normalizedAnimalId}
-                    </p>
+                    {user ? (
+                        <button
+                            onClick={async () => {
+                                const { error } = await supabase
+                                    .from('animal')
+                                    .update({ user_id: user.id })
+                                    .eq('id', normalizedAnimalId)
+                                    .is('user_id', null)
+                                if (error) {
+                                    setError('Impossible de lier cet animal à votre compte.')
+                                } else {
+                                    window.location.href = '/dashboard'
+                                }
+                            }}
+                            className="inline-block w-full bg-accent hover:bg-accent-hover text-bg font-semibold text-sm py-3 px-6 rounded transition-all text-center"
+                        >
+                            Remplir ma fiche
+                        </button>
+                    ) : (
+                        <a
+                            href={`/login?mode=signup&animal=${normalizedAnimalId}`}
+                            className="inline-block w-full bg-accent hover:bg-accent-hover text-bg font-semibold text-sm py-3 px-6 rounded transition-all text-center"
+                        >
+                            Remplir ma fiche
+                        </a>
+                    )}
                 </div>
             </div>
         )

@@ -23,6 +23,7 @@ type Animal = {
     telephone_veterinaire: string
     birth_date?: string
     user_id: string | null
+    photo_url?: string | null
 }
 
 type AccessMeta = {
@@ -42,7 +43,6 @@ export const AnimalPage = () => {
     const [animal, setAnimal] = useState<Animal | null>(null)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
-    const [formData,] = useState<Partial<Animal>>({})
     const hasSentAccessEvent = useRef(false)
     const toastShownRef = useRef(false)
     const [manualNotifyPending, setManualNotifyPending] = useState(false)
@@ -296,12 +296,14 @@ export const AnimalPage = () => {
                 Vous venez de scanner la fiche de {animal.nom}, Appelez rapidement son propriétaire à l'aide des informations disponibles ci-dessous. S'il ne répond pas, n'hésitez pas à lui envoyer un SMS ou à contacter son vétérinaire.
             </p>
             <div className="bg-bg-elevated border border-border overflow-hidden">
+                {animal.photo_url && (
+                    <div className="w-full h-96 bg-bg-surface overflow-hidden">
+                        <img src={animal.photo_url} alt={animal.nom} className="w-full h-full object-cover" />
+                    </div>
+                )}
                 <div className="bg-accent p-8 text-bg text-center">
                     <h2 className="font-unbounded text-2xl font-bold">{animal.nom}</h2>
                     <p className="text-bg/80 text-sm mt-1">{animal.race}</p>
-                    <span className="inline-block mt-3 bg-bg/20 rounded px-2.5 py-1 text-xs">
-                        {animal.id}
-                    </span>
                 </div>
 
                 <div className="p-6 md:p-8 space-y-4">

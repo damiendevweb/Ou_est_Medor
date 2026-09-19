@@ -1,6 +1,9 @@
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState, useMemo, useRef } from 'react'
 import { supabase } from '../lib/supabase'
 import { useAge } from '../hooks/useAge'
+import { compressImage } from '../lib/compressImage'
+import { useAuth } from '../hooks/useAuth'
+import { CropModal } from '../components/CropModal'
 import EnablePushButton from '../components/EnablePushButton'
 import TestPushButton from '../components/TestPushButton'
 import SidebarProfile from '../components/SidebarProfile'
@@ -35,6 +38,7 @@ type Animal = {
     user_id: string | null
     qr_url: string | null
     birth_date?: string
+    photo_url: string | null
 }
 
 const toFormData = (a: Animal): Partial<Animal> => ({
@@ -50,6 +54,7 @@ const toFormData = (a: Animal): Partial<Animal> => ({
     mail_1: a.mail_1,
     mail_2: a.mail_2,
     telephone_veterinaire: a.telephone_veterinaire,
+    photo_url: a.photo_url,
 })
 
 export const Dashboard = () => {
@@ -65,6 +70,11 @@ export const Dashboard = () => {
     const [scansLoading, setScansLoading] = useState(true)
     const [historyOpen, setHistoryOpen] = useState(false)
     const [openMonths, setOpenMonths] = useState<Set<string>>(new Set())
+    const [uploading, setUploading] = useState(false)
+    const fileInputRef = useRef<HTMLInputElement>(null)
+    const { user } = useAuth()
+    const [cropFile, setCropFile] = useState<File | null>(null)
+    const [photoTs, setPhotoTs] = useState(0)
 
     const scansByMonth = useMemo(() => {
         const groups = new Map<string, { calendarDate: string; items: ScanEvent[] }>()
@@ -177,6 +187,63 @@ export const Dashboard = () => {
         setFormData({})
     }
 
+    const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0]
+        if (!file || !animal?.id || !user?.id) return
+        setCropFile(file)
+        if (fileInputRef.current) fileInputRef.current.value = ''
+    }
+
+    const handleCropped = async (blob: Blob) => {
+        if (!animal?.id || !user?.id) return
+        setCropFile(null)
+        setUploading(true)
+        try {
+            const ext = 'jpg'
+            const path = `${user.id}/${animal.id}.${ext}`
+
+            const { error: uploadError } = await supabase.storage
+                .from('animal-photos')
+                .upload(path, blob, { upsert: true })
+
+            if (uploadError) throw uploadError
+
+            const { data: urlData } = supabase.storage
+                .from('animal-photos')
+                .getPublicUrl(path)
+
+            const { error: updateError } = await supabase
+                .from('animal')
+                .update({ photo_url: urlData.publicUrl })
+                .eq('id', animal.id)
+
+            if (updateError) throw updateError
+
+            await fetchAnimals()
+            setPhotoTs(Date.now())
+        } catch (err: unknown) {
+            setError(err instanceof Error ? err.message : "Erreur lors de l'upload")
+        } finally {
+            setUploading(false)
+        }
+    }
+
+    const handleDeletePhoto = async () => {
+        if (!animal?.id || !user?.id) return
+
+        try {
+            const ext = animal.photo_url?.split('.').pop() || 'jpg'
+            const path = `${user.id}/${animal.id}.${ext}`
+
+            await supabase.storage.from('animal-photos').remove([path])
+            await supabase.from('animal').update({ photo_url: null }).eq('id', animal.id)
+            await fetchAnimals()
+            setPhotoTs(Date.now())
+        } catch (err: unknown) {
+            setError(err instanceof Error ? err.message : "Erreur lors de la suppression")
+        }
+    }
+
     if (loading) {
         return (
             <div className="flex justify-center items-center h-64">
@@ -269,6 +336,58 @@ export const Dashboard = () => {
                                 </div>
                             )}
                         </div>
+                    </div>
+
+                    <div className="mb-6">
+                        {animal.photo_url ? (
+                            <div className="relative rounded overflow-hidden border border-border bg-bg-surface">
+                                <img src={`${animal.photo_url}?t=${photoTs}`} alt={animal.nom} className="w-full h-80 object-cover" />
+                                {editing && (
+                                    <div className="absolute top-2 right-2 flex gap-1">
+                                        <input
+                                            ref={fileInputRef}
+                                            type="file"
+                                            accept="image/jpeg,image/png,image/webp"
+                                            onChange={handlePhotoUpload}
+                                            className="hidden"
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => fileInputRef.current?.click()}
+                                            disabled={uploading}
+                                            className="px-2.5 py-1 text-[10px] font-medium text-bg bg-black/50 rounded hover:bg-black/70 transition-colors disabled:opacity-50"
+                                        >
+                                            {uploading ? 'Envoi...' : 'Changer'}
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={handleDeletePhoto}
+                                            className="px-2.5 py-1 text-[10px] font-medium text-bg bg-error/70 rounded hover:bg-error transition-colors"
+                                        >
+                                            Supprimer
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        ) : editing ? (
+                            <div className="rounded border-2 border-dashed border-border bg-bg-surface p-8 text-center">
+                                <input
+                                    ref={fileInputRef}
+                                    type="file"
+                                    accept="image/jpeg,image/png,image/webp"
+                                    onChange={handlePhotoUpload}
+                                    className="hidden"
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => fileInputRef.current?.click()}
+                                    disabled={uploading}
+                                    className="text-xs font-medium text-accent hover:text-accent-hover transition-colors disabled:opacity-50"
+                                >
+                                    {uploading ? 'Envoi...' : 'Ajouter une photo'}
+                                </button>
+                            </div>
+                        ) : null}
                     </div>
 
                     <form onSubmit={editing ? saveChanges : undefined}>
@@ -514,6 +633,14 @@ export const Dashboard = () => {
                     </div>
                 </div>
             </div>
+
+            {cropFile && (
+                <CropModal
+                    file={cropFile}
+                    onCrop={handleCropped}
+                    onCancel={() => setCropFile(null)}
+                />
+            )}
         </div>
     )
 }

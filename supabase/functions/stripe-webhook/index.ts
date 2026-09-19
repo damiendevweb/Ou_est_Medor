@@ -276,19 +276,6 @@ Deno.serve(async (req) => {
       })
     }
 
-    if (event.type === 'checkout.session.expired') {
-      const session = event.data.object as Stripe.Checkout.Session
-      const orderId = session.metadata?.order_id
-      if (orderId) {
-        await supabase
-          .from('orders')
-          .update({ status: 'expired' })
-          .eq('id', orderId)
-          .eq('status', 'pending')
-      }
-      return json(200, { received: true, skipped: 'Session expired' })
-    }
-
     return json(200, { received: true, skipped: `Unhandled event ${event.type}` })
   } catch (error: unknown) {
     const err = error instanceof Error ? error : new Error(String(error))

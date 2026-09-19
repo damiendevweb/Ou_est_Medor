@@ -37,9 +37,6 @@ type Order = {
 
 const STATUS_LABELS: Record<string, { label: string; className: string }> = {
     paid: { label: 'Payée', className: 'bg-success/10 text-success' },
-    pending: { label: 'En attente de paiement', className: 'bg-amber-100 text-amber-700' },
-    expired: { label: 'Expirée', className: 'bg-bg-hover text-text-muted' },
-    cancelled: { label: 'Annulée', className: 'bg-bg-hover text-text-muted' },
 }
 
 const formatPrice = (cents: number, currency: string) =>
@@ -67,6 +64,7 @@ export const OrdersPage = () => {
                     'id, status, currency, created_at, subtotal_cents, discount_cents, shipping_cents, total_cents, promo_code, shipping_address, order_items ( id, product_id, quantity, unit_price_cents, customization )'
                 )
                 .eq('user_id', user.id)
+                .eq('status', 'paid')
                 .order('created_at', { ascending: false })
 
             if (error) {

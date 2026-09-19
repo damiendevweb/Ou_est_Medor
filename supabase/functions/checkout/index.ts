@@ -178,8 +178,6 @@ Deno.serve(async (req) => {
       quantity: number
     }[] = []
 
-    let subtotalCents = 0
-
     for (const item of items) {
       const product = productMap.get(item.id)
       if (!product || !product.is_active) {
@@ -230,8 +228,6 @@ Deno.serve(async (req) => {
         },
         quantity: item.quantity,
       })
-
-      subtotalCents += product.price_cents * item.quantity
     }
 
     const stripeCustomerEmail = userEmail ?? (email ? email.trim() : null)
@@ -263,26 +259,6 @@ Deno.serve(async (req) => {
       },
       { idempotencyKey: crypto.randomUUID() }
     )
-
-    const { error: orderError } = await supabase
-      .from('orders')
-      .insert({
-        id: orderId,
-        stripe_session_id: session.id,
-        status: 'pending',
-        user_id: userId,
-        customer_email: stripeCustomerEmail,
-        subtotal_cents: subtotalCents,
-        shipping_cents: 0,
-        total_cents: subtotalCents,
-        currency: 'eur',
-      })
-
-    if (orderError) {
-      console.error('Order insert error:', orderError)
-      await stripe.checkout.sessions.expire(session.id).catch(() => {})
-      return json(500, { error: 'Impossible de créer la commande.' })
-    }
 
     return json(200, { url: session.url })
   } catch (error: unknown) {

@@ -21,7 +21,7 @@ export default function TestPushButton() {
       onClick={sendTestPush}
       className="rounded bg-accent/10 border border-accent/20 px-4 py-2 text-accent font-medium hover:bg-accent/20 transition-colors text-sm"
     >
-      Envoyer une push test
+      Envoyer une notification de test
     </button>
   )
 }

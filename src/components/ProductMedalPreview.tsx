@@ -8,9 +8,9 @@ export const ProductMedalPreview = ({ currentFont, previewText }: Props) => {
         <div className="flex items-center justify-center gap-6">
             <div className="relative flex items-center justify-center w-36 h-36 shrink-0">
                 <MedalBase />
-                <div className="relative text-center px-3" style={{ fontFamily: currentFont.family }}>
+                <div className="relative text-center px-3 w-full overflow-hidden" style={{ fontFamily: currentFont.family }}>
                     {previewText.split('\n').map((line, i) => (
-                        <p key={i} className={`text-text-primary ${i === 0 ? 'text-sm font-bold' : 'text-xs'}`}>
+                        <p key={i} className={`text-text-primary truncate ${i === 0 ? 'text-sm font-bold' : 'text-xs'}`}>
                             {line}
                         </p>
                     ))}

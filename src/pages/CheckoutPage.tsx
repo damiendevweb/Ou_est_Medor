@@ -36,7 +36,18 @@ export const CheckoutPage = () => {
         })
 
         if (fnError) {
-            setError(fnError.message || 'Impossible de lancer le paiement.')
+            const msg = fnError.message || ''
+            if (msg.includes('shipping rate') || msg.includes('livraison')) {
+                setError('Erreur de livraison. Contactez-nous pour finaliser votre commande.')
+            } else if (msg.includes('Missing environment')) {
+                setError('Service temporairement indisponible. Réessayez dans quelques instants.')
+            } else if (msg.includes('stock') || msg.includes('Stock')) {
+                setError('Un article n\'est plus disponible en stock.')
+            } else if (msg.includes('panier') || msg.includes('cart')) {
+                setError('Votre panier est vide ou contient des articles invalides.')
+            } else {
+                setError('Une erreur est survenue. Réessayez ou contactez-nous à contact@ouestmedor.fr')
+            }
             setLoading(false)
             return
         }
@@ -45,7 +56,7 @@ export const CheckoutPage = () => {
         if (url) {
             window.location.href = url
         } else {
-            setError('Impossible de lancer le paiement.')
+            setError('Une erreur est survenue. Réessayez ou contactez-nous à contact@ouestmedor.fr')
             setLoading(false)
         }
     }
@@ -163,9 +174,15 @@ export const CheckoutPage = () => {
                             )}
 
                             {error && (
-                                <p className="mt-3 rounded border border-error/30 bg-error/5 px-3 py-2 text-xs text-error">
-                                    {error}
-                                </p>
+                                <div className="mt-3 rounded border border-error/30 bg-error/5 px-4 py-3 text-xs text-error">
+                                    <p>{error}</p>
+                                    <button
+                                        onClick={() => { setError(''); handlePay() }}
+                                        className="mt-2 text-[11px] font-medium underline hover:no-underline"
+                                    >
+                                        Réessayer
+                                    </button>
+                                </div>
                             )}
 
                             <button
